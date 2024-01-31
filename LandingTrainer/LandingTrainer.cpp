@@ -3,18 +3,15 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <thread>
 
 #include "SimConnect.h"
+#include "Dispatcher.h"
 
-static int DATA_DEFINE_ID = 0;
-static int DATA_REQUEST_ID = 0;
-
-struct AirplaneData
+void callback(SIMCONNECT_RECV* data)
 {
-	double latitude;
-	double longitude;
-	double beacon;
-};
+	printf("This is a callback being called\n");
+}
 
 int main()
 {
@@ -22,34 +19,18 @@ int main()
 
 	if (SUCCEEDED(SimConnect_Open(&sim, "Request Data", NULL, 0, 0, 0)))
 	{
-		printf("\n Connected to sim");
+		printf("\nConnected to sim\n");
 
-		SimConnect_AddToDataDefinition(sim, DATA_DEFINE_ID, "Plane Latitude", "degrees");
-		SimConnect_AddToDataDefinition(sim, DATA_DEFINE_ID, "Plane Longitude", "degrees");
-		SimConnect_AddToDataDefinition(sim, DATA_DEFINE_ID, "L:S_OH_EXT_LT_BEACON", "Boolean");
+		SimConnect_AddToDataDefinition(sim, 0, "Plane Altitude", "feet");
+		SimConnect_AddToDataDefinition(sim, 0, "Plane Latitude", "degrees");
+		SimConnect_AddToDataDefinition(sim, 0, "Plane Longitude", "degrees");
 
-		SimConnect_RequestDataOnSimObject(sim, DATA_REQUEST_ID, DATA_DEFINE_ID, SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SIM_FRAME);
+		SimConnect_RequestDataOnSimObject(sim, 0, 0, SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SECOND);
 
-		while (true)
-		{
-			SIMCONNECT_RECV* pData;
-			DWORD cbData;
+		Dispatcher dispatcher(sim);
+		dispatcher.subscribe(callback);
 
-			if (FAILED(SimConnect_GetNextDispatch(sim, &pData, &cbData))) continue;
-			
-			switch (pData->dwID)
-			{
-			case SIMCONNECT_RECV_ID_SIMOBJECT_DATA:
-				SIMCONNECT_RECV_SIMOBJECT_DATA* pObjData = (SIMCONNECT_RECV_SIMOBJECT_DATA*)pData;
-
-				DWORD objectID = pObjData->dwObjectID;
-				AirplaneData* airplaneData = (AirplaneData*)&pObjData->dwData;
-				printf("\33[2K\r");
-				printf("Object id: %d Latitude: %f\ Longitude: %f Beacon: %f\r", objectID, airplaneData->latitude, airplaneData->longitude, airplaneData->beacon);
-			}
-
-			Sleep(1);
-		}
+		Sleep(5000);
 
 		SimConnect_Close(sim);
 	}
