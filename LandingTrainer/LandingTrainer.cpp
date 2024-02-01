@@ -7,6 +7,7 @@
 
 #include "SimConnect.h"
 #include "Dispatcher.h"
+#include "DefinitionCounter.h"
 
 void callback(SIMCONNECT_RECV* data)
 {
@@ -26,9 +27,6 @@ int main()
 		SimConnect_AddToDataDefinition(sim, 0, "Plane Longitude", "degrees");
 
 		SimConnect_RequestDataOnSimObject(sim, 0, 0, SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SECOND);
-
-		Dispatcher dispatcher(sim);
-		dispatcher.subscribe(callback);
 
 		Sleep(5000);
 

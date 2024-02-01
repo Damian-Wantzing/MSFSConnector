@@ -131,13 +131,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DefinitionCounter.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="LandingTrainer.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(MSFS_SDK)\SimConnect SDK\include</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="SimVarWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DefinitionCounter.h" />
     <ClInclude Include="Dispatcher.h" />
+    <ClInclude Include="SimVar.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SimVarWatcher.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LandingTrainer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

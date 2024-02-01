@@ -1,4 +1,4 @@
-#include "dispatcher.h"
+#include "Dispatcher.h"
 
 Dispatcher::Dispatcher(HANDLE sim)
 {
@@ -14,22 +14,19 @@ Dispatcher::~Dispatcher()
 	runThread.join();
 }
 
-void Dispatcher::subscribe(void (*callback)(SIMCONNECT_RECV* data))
+Dispatcher::CallbackID Dispatcher::registerCallback(std::function<void(SIMCONNECT_RECV*)> callback)
 {
 	rwMutex.lock();
-	callbacks.push_back(callback);
+	callbacks.insert(std::make_pair(nextCallbackID, callback));
 	rwMutex.unlock();
+
+	return nextCallbackID++;
 }
 
-void Dispatcher::unsubscribe(void (*callback)(SIMCONNECT_RECV* data))
+void Dispatcher::deregisterCallback(CallbackID id)
 {
 	rwMutex.lock();
-	for (size_t i = 0; i < callbacks.size(); ++i)
-	{
-		if (callbacks[i] != callback) continue;
-		
-		callbacks.erase(this->callbacks.begin() + i);
-	}
+	callbacks.erase(id);
 	rwMutex.unlock();
 }
 
@@ -44,7 +41,6 @@ void Dispatcher::run()
 
 void CALLBACK Dispatcher::handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, void* context)
 {
-	printf("called handlestatic");
 	Dispatcher* dispatcher = static_cast<Dispatcher*>(context);
 	dispatcher->handle(pData, cbData);
 }
@@ -52,9 +48,9 @@ void CALLBACK Dispatcher::handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, voi
 void Dispatcher::handle(SIMCONNECT_RECV* pData, DWORD cbData)
 {
 	rwMutex.lock_shared();
-	for (void(*callback)(SIMCONNECT_RECV* data)  : callbacks)
+	for (std::map<size_t, std::function<void (SIMCONNECT_RECV *)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
 	{
-		callback(pData);
+		it->second(pData);
 	}
 	rwMutex.unlock_shared();
 }
