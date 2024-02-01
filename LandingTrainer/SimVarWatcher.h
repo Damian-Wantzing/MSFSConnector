@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include <windows.h>
 #include "SimConnect.h"
@@ -19,7 +19,9 @@ public:
 
 private:
 	HANDLE sim;
-	std::map<std::string, SimVar> simVars;
-	size_t defineID = 0;
+	SIMCONNECT_PERIOD interval;
+	SIMCONNECT_OBJECT_ID objectID;
+	std::unordered_map<std::string, SimVar> simVars;
+	size_t watcherID = 0;
 };
 

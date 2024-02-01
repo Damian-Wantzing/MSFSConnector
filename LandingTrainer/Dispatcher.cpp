@@ -48,7 +48,7 @@ void CALLBACK Dispatcher::handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, voi
 void Dispatcher::handle(SIMCONNECT_RECV* pData, DWORD cbData)
 {
 	rwMutex.lock_shared();
-	for (std::map<size_t, std::function<void (SIMCONNECT_RECV *)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
+	for (std::unordered_map<size_t, std::function<void (SIMCONNECT_RECV *)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
 	{
 		it->second(pData);
 	}

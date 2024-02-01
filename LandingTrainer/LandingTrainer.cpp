@@ -6,8 +6,7 @@
 #include <thread>
 
 #include "SimConnect.h"
-#include "Dispatcher.h"
-#include "DefinitionCounter.h"
+#include "SimVarWatcher.h"
 
 void callback(SIMCONNECT_RECV* data)
 {
@@ -22,13 +21,27 @@ int main()
 	{
 		printf("\nConnected to sim\n");
 
-		SimConnect_AddToDataDefinition(sim, 0, "Plane Altitude", "feet");
-		SimConnect_AddToDataDefinition(sim, 0, "Plane Latitude", "degrees");
-		SimConnect_AddToDataDefinition(sim, 0, "Plane Longitude", "degrees");
+		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_SECOND);
+		watcher.addSimVar(
+			SimVar{
+				"Plane Latitude",
+				"degrees"
+			}
+		);
 
-		SimConnect_RequestDataOnSimObject(sim, 0, 0, SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_PERIOD_SECOND);
+		SimVarWatcher watcher2(sim, SIMCONNECT_PERIOD_SECOND);
+		watcher2.addSimVar(
+			SimVar{
+				"Plane Latitude",
+				"degrees"
+			}
+		);
 
 		Sleep(5000);
+		
+		watcher.removeSimVar("Plane Latitude");
+
+		Sleep(10000000);
 
 		SimConnect_Close(sim);
 	}
