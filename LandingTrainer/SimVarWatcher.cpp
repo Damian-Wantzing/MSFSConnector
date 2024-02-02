@@ -35,19 +35,13 @@ void SimVarWatcher::removeSimVar(std::string name)
 	// if we do not return here we will attempt to request a non existing data definition and msfs crashes
 	if (simVars.empty()) return;
 
-	for (std::unordered_map<std::string, SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
+	for (std::map<std::string, SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->second.name.c_str(), it->second.unitType.c_str());
 	}
 
 	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 }
-
-struct test
-{
-	double latitude;
-	double longitude;
-};
 
 void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 {
@@ -63,8 +57,4 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 	for (DWORD i = 0; i < objectData->dwDefineCount; i++) {
 		printf("dwData[%d]: %f\n", i, dataArray[i]);
 	}
-
-	/*test* pS = (test*)&objectData->dwData;
-
-	printf("latitude: %f; longitude: %f\n", pS->latitude, pS->longitude);*/
 }

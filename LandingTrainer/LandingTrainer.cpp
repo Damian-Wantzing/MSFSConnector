@@ -3,7 +3,6 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include <thread>
 
 #include "SimConnect.h"
 #include "SimVarWatcher.h"
@@ -26,6 +25,15 @@ int main()
 		watcher.addSimVar(SimVar{ "Plane Latitude","degrees" });
 		watcher.addSimVar(SimVar{ "Plane Longitude","degrees" });
 		watcher.addSimVar(SimVar{ "Plane Altitude","feet" });
+
+		try
+		{
+			watcher.get<double>("Plane Altitude");
+		}
+		catch (const std::runtime_error& error)
+		{
+			printf("%s", error.what());
+		}
 
 		watcher.removeSimVar("Plane Longitude");
 
