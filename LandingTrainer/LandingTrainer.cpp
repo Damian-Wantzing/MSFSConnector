@@ -28,7 +28,8 @@ int main()
 
 		try
 		{
-			watcher.get<double>("Plane Altitude");
+			double altitude = watcher.get<double>("Plane Altitude");
+			printf("altitude: %f", altitude);
 		}
 		catch (const std::runtime_error& error)
 		{
