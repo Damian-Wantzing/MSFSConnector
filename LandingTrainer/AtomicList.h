@@ -39,7 +39,7 @@ public:
         list.push_back(value); 
     }
 
-    bool empty() 
+    bool empty() const
     { 
         std::shared_lock<std::shared_mutex> lock(rwMutex);
         return list.empty(); 
@@ -53,6 +53,6 @@ public:
 
 private:
 	std::list<T> list;
-    std::shared_mutex rwMutex;
+    mutable std::shared_mutex rwMutex;
 };
 

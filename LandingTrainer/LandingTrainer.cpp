@@ -30,7 +30,7 @@ int main()
 
 		try
 		{
-			Sleep(5000);
+			Sleep(2000);
 			double altitude = watcher.get<double>("Plane Altitude");
 			double longitude = watcher.get<double>("Plane Longitude");
 			double latitude = watcher.get<double>("Plane Latitude");

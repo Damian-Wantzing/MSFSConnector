@@ -56,6 +56,9 @@
     <ClInclude Include="SimVarWatcher.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
+    <ClInclude Include="AtomicMap.h">
+      <Filter>Header Files\Generic Libs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LandingTrainer.rc">

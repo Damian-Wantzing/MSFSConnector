@@ -16,7 +16,6 @@ void SimVarWatcher::addSimVar(SimVar simVar)
 	// does the simVar already exist?
 	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it) if (it->name == simVar.name) return;
 
-	// TODO: add rwMutex since this can be accessed in multiple threads
 	simVars.push_back(simVar);
 
 	// if the interval is once, we have to re-request the data or it will not be populated
@@ -38,7 +37,6 @@ void SimVarWatcher::removeSimVar(std::string name)
 	bool exists = false;
 
 	// to remove a simvar we have to complete clear the definition and send a new request with a new ID
-	// TODO: add rwMutex since this can be accessed in multiple threads
 	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		if (it->name != name) continue;
@@ -51,7 +49,6 @@ void SimVarWatcher::removeSimVar(std::string name)
 	if (!exists) return;
 
 	// remove the key from the simVarResults
-	// TODO: add rwMutex since this can be accessed in multiple threads
 	simVarResults.erase(name);
 
 	addDataDefinitions();
@@ -89,7 +86,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 
 	char* dataArray = reinterpret_cast<char*>(&objectData->dwData);
 
-	// TODO: add rwMutex since this can be accessed in multiple threads
 	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		switch (it->dataType)
@@ -97,7 +93,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_FLOAT32:
 		{
 			float value = *reinterpret_cast<float*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(float);
 			break;
@@ -105,7 +100,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_FLOAT64:
 		{
 			double value = *reinterpret_cast<double*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(double);
 			break;
@@ -113,7 +107,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_INT32:
 		{
 			int32_t value = *reinterpret_cast<int32_t*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(int32_t);
 			break;
@@ -121,7 +114,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_INT64:
 		{
 			int64_t value = *reinterpret_cast<int64_t*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(int64_t);
 			break;
@@ -129,7 +121,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING8:
 		{
 			std::string value(dataArray, 8);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -137,7 +128,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING32:
 		{
 			std::string value(dataArray, 32);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -145,7 +135,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING64:
 		{
 			std::string value(dataArray, 64);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -153,7 +142,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING128:
 		{
 			std::string value(dataArray, 128);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -161,7 +149,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING256:
 		{
 			std::string value(dataArray, 256);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -169,7 +156,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_STRING260:
 		{
 			std::string value(dataArray, 260);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -183,7 +169,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_INITPOSITION:
 		{
 			SIMCONNECT_DATA_INITPOSITION value = *reinterpret_cast<SIMCONNECT_DATA_INITPOSITION*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -191,7 +176,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_MARKERSTATE:
 		{
 			SIMCONNECT_DATA_MARKERSTATE value = *reinterpret_cast<SIMCONNECT_DATA_MARKERSTATE*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -199,7 +183,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_WAYPOINT:
 		{
 			SIMCONNECT_DATA_WAYPOINT value = *reinterpret_cast<SIMCONNECT_DATA_WAYPOINT*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -207,7 +190,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_LATLONALT:
 		{
 			SIMCONNECT_DATA_LATLONALT value = *reinterpret_cast<SIMCONNECT_DATA_LATLONALT*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;
@@ -215,7 +197,6 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		case SIMCONNECT_DATATYPE_XYZ:
 		{
 			SIMCONNECT_DATA_XYZ value = *reinterpret_cast<SIMCONNECT_DATA_XYZ*>(dataArray);
-			// TODO: add rwMutex since this can be accessed in multiple threads
 			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
 			dataArray += sizeof(value);
 			break;

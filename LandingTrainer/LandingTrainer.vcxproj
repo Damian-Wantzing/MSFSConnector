@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AtomicList.h" />
+    <ClInclude Include="AtomicMap.h" />
     <ClInclude Include="DefinitionCounter.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="SimVar.h" />
