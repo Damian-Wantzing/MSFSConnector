@@ -17,7 +17,7 @@ void SimVarWatcher::addSimVar(SimVar simVar)
 	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it) if (it->name == simVar.name) return;
 
 	// TODO: add rwMutex since this can be accessed in multiple threads
-	this->simVars.push_back(simVar);
+	simVars.push_back(simVar);
 
 	// if the interval is once, we have to re-request the data or it will not be populated
 	if (interval == SIMCONNECT_PERIOD_ONCE)
