@@ -16,18 +16,16 @@ Dispatcher::~Dispatcher()
 
 Dispatcher::CallbackID Dispatcher::registerCallback(std::function<void(SIMCONNECT_RECV*)> callback)
 {
-	rwMutex.lock();
+	std::unique_lock<std::shared_mutex> lock(rwMutex);
 	callbacks.insert(std::make_pair(nextCallbackID, callback));
-	rwMutex.unlock();
 
 	return nextCallbackID++;
 }
 
 void Dispatcher::deregisterCallback(CallbackID id)
 {
-	rwMutex.lock();
+	std::unique_lock<std::shared_mutex> lock(rwMutex);
 	callbacks.erase(id);
-	rwMutex.unlock();
 }
 
 void Dispatcher::run()
@@ -47,10 +45,9 @@ void CALLBACK Dispatcher::handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, voi
 
 void Dispatcher::handle(SIMCONNECT_RECV* pData, DWORD cbData)
 {
-	rwMutex.lock_shared();
+	std::shared_lock<std::shared_mutex> lock(rwMutex);
 	for (std::unordered_map<size_t, std::function<void (SIMCONNECT_RECV *)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
 	{
 		it->second(pData);
 	}
-	rwMutex.unlock_shared();
 }
