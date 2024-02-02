@@ -7,6 +7,8 @@
 #include "SimConnect.h"
 #include "SimVarWatcher.h"
 
+#include "AtomicList.h"
+
 void callback(SIMCONNECT_RECV* data)
 {
 	printf("This is a callback being called\n");
@@ -20,7 +22,7 @@ int main()
 	{
 		printf("\nConnected to sim\n");
 
-		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_SECOND);
+		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_ONCE);
 
 		watcher.addSimVar(SimVar{ "Plane Latitude","degrees" });
 		watcher.addSimVar(SimVar{ "Plane Longitude","degrees" });
@@ -28,15 +30,16 @@ int main()
 
 		try
 		{
+			Sleep(5000);
 			double altitude = watcher.get<double>("Plane Altitude");
-			printf("altitude: %f", altitude);
+			double longitude = watcher.get<double>("Plane Longitude");
+			double latitude = watcher.get<double>("Plane Latitude");
+			printf("altitude: %f\nlatitude: %f\nlongitude: %f\n", altitude, latitude, longitude);
 		}
 		catch (const std::runtime_error& error)
 		{
 			printf("%s", error.what());
 		}
-
-		watcher.removeSimVar("Plane Longitude");
 
 		Sleep(10000000);
 

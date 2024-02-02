@@ -2,11 +2,11 @@
 
 #include <map>
 #include <any>
-#include <list>
 
 #include <windows.h>
 #include "SimConnect.h"
 
+#include "AtomicList.h"
 #include "Dispatcher.h"
 #include "SimVar.h"
 #include "DefinitionCounter.h"
@@ -28,11 +28,12 @@ public:
 		return std::any_cast<T>(simVarResults[name]);
 	}
 private:
+	void addDataDefinitions();
+
 	HANDLE sim;
 	SIMCONNECT_PERIOD interval;
 	SIMCONNECT_OBJECT_ID objectID;
-	// TODO: We have to check in addSimVar if the SimVar is not yet already present.
-	std::list<SimVar> simVars;
+	AtomicList<SimVar> simVars;
 	std::map<std::string, std::any> simVarResults;
 	DWORD simConnectWatcherID = 0; // The watcherID is only used for the request and should not be used to tell apart two different watchers, since this variable is prone to changing when adding or removing SimVars
 };

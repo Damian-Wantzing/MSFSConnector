@@ -14,14 +14,23 @@ SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_
 void SimVarWatcher::addSimVar(SimVar simVar)
 {
 	// does the simVar already exist?
-	for (std::list<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it) if (it->name == simVar.name) return;
+	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it) if (it->name == simVar.name) return;
 
 	// TODO: add rwMutex since this can be accessed in multiple threads
 	this->simVars.push_back(simVar);
 
-	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
-	SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
-	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+	// if the interval is once, we have to re-request the data or it will not be populated
+	if (interval == SIMCONNECT_PERIOD_ONCE)
+	{
+		addDataDefinitions();
+	}
+	// otherwise just add the definition and move on
+	else
+	{
+		SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
+		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+		SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+	}
 }
 
 void SimVarWatcher::removeSimVar(std::string name)
@@ -30,7 +39,7 @@ void SimVarWatcher::removeSimVar(std::string name)
 
 	// to remove a simvar we have to complete clear the definition and send a new request with a new ID
 	// TODO: add rwMutex since this can be accessed in multiple threads
-	for (std::list<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
+	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		if (it->name != name) continue;
 		simVars.erase(it);
@@ -41,22 +50,26 @@ void SimVarWatcher::removeSimVar(std::string name)
 	// if the simvar does not exist we can return
 	if (!exists) return;
 
-	// remove our entire current data definition, since we will be making a new one
-	SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
-
 	// remove the key from the simVarResults
 	// TODO: add rwMutex since this can be accessed in multiple threads
 	simVarResults.erase(name);
 
+	addDataDefinitions();
+}
+
+void SimVarWatcher::addDataDefinitions()
+{
+	// remove our entire current data definition, since we will be making a new one
+	SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
+	
 	// get a new watcher ID for the new request
 	simConnectWatcherID = DefinitionCounter::getDefinitionID();
 
-	// if there are no more simvars, we return
+	// if there are no simvars, we return
 	// if we do not return here we will attempt to request a non existing data definition and msfs crashes
 	if (simVars.empty()) return;
 
-	// TODO: add rwMutex since this can be accessed in multiple threads
-	for (std::list<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
+	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str());
 	}
@@ -77,7 +90,7 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 	char* dataArray = reinterpret_cast<char*>(&objectData->dwData);
 
 	// TODO: add rwMutex since this can be accessed in multiple threads
-	for (std::list<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
+	for (AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
 		switch (it->dataType)
 		{
