@@ -22,24 +22,12 @@ int main()
 		printf("\nConnected to sim\n");
 
 		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_SECOND);
-		watcher.addSimVar(
-			SimVar{
-				"Plane Latitude",
-				"degrees"
-			}
-		);
 
-		SimVarWatcher watcher2(sim, SIMCONNECT_PERIOD_SECOND);
-		watcher2.addSimVar(
-			SimVar{
-				"Plane Latitude",
-				"degrees"
-			}
-		);
+		watcher.addSimVar(SimVar{ "Plane Latitude","degrees" });
+		watcher.addSimVar(SimVar{ "Plane Longitude","degrees" });
+		watcher.addSimVar(SimVar{ "Plane Altitude","feet" });
 
-		Sleep(5000);
-		
-		watcher.removeSimVar("Plane Latitude");
+		watcher.removeSimVar("Plane Longitude");
 
 		Sleep(10000000);
 

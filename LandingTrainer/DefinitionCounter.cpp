@@ -1,8 +1,8 @@
 #include "DefinitionCounter.h"
 
-size_t DefinitionCounter::definitionCount = 0;
+DWORD DefinitionCounter::definitionCount = 0;
 
-size_t DefinitionCounter::getDefinitionID()
+DWORD DefinitionCounter::getDefinitionID()
 {
 	return definitionCount++;
 }

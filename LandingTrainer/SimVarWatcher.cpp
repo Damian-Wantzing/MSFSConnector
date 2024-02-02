@@ -1,4 +1,5 @@
 #include "SimVarWatcher.h"
+#include <iostream>
 
 SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_OBJECT_ID objectID)
 {
@@ -6,22 +7,29 @@ SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_
 	this->interval = interval;
 	this->objectID = objectID;
 
-	watcherID = DefinitionCounter::getDefinitionID();
+	simConnectWatcherID = DefinitionCounter::getDefinitionID();
 	Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
 }
 
 void SimVarWatcher::addSimVar(SimVar simVar)
 {
-	HRESULT hr = SimConnect_AddToDataDefinition(sim, watcherID, simVar.name.c_str(), simVar.unitType.c_str());
-	if (FAILED(hr)) throw std::runtime_error("error adding simvar to data definition");
-	simVars.insert(std::pair<std::string, SimVar>(simVar.name, simVar));
-	SimConnect_RequestDataOnSimObject(sim, watcherID, watcherID, objectID, interval);
+	this->simVars.insert(std::pair<std::string, SimVar>(simVar.name, simVar));
+
+	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
+	SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 }
 
 void SimVarWatcher::removeSimVar(std::string name)
 {
-	SimConnect_ClearDataDefinition(sim, watcherID);
+	// TODO: to remove a simvar we have to complete clear the definition and send a new request with a new ID
 	simVars.erase(name);
+	
+	// remove our entire current data definition, since we will be making a new one
+	SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
+
+	// get a new watcher ID for the new request
+	simConnectWatcherID = DefinitionCounter::getDefinitionID();
 
 	// if there are no more simvars, we return
 	// if we do not return here we will attempt to request a non existing data definition and msfs crashes
@@ -29,21 +37,34 @@ void SimVarWatcher::removeSimVar(std::string name)
 
 	for (std::unordered_map<std::string, SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 	{
-		SimConnect_AddToDataDefinition(sim, watcherID, it->second.name.c_str(), it->second.unitType.c_str());
+		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->second.name.c_str(), it->second.unitType.c_str());
 	}
 
-	SimConnect_RequestDataOnSimObject(sim, watcherID, watcherID, objectID, interval);
+	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 }
+
+struct test
+{
+	double latitude;
+	double longitude;
+};
 
 void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 {
 	// if this is not simobject data, we are not interested
 	if (data->dwID != SIMCONNECT_RECV_ID_SIMOBJECT_DATA) return;
 
-	SIMCONNECT_RECV_SIMOBJECT_DATA* objectData = (SIMCONNECT_RECV_SIMOBJECT_DATA*) data;
+	SIMCONNECT_RECV_SIMOBJECT_DATA* objectData = (SIMCONNECT_RECV_SIMOBJECT_DATA*)data;
 
 	// if it is not the correct define id, we are not interested
-	if (objectData->dwDefineID != watcherID) return;
+	if (objectData->dwRequestID != simConnectWatcherID) return;
 
-	printf("class defineID: %d; data requestID: %d; data defineID: %d\n", (int)this->watcherID, (int)objectData->dwRequestID, (int)objectData->dwDefineID);
+	double* dataArray = reinterpret_cast<double*>(&objectData->dwData);
+	for (DWORD i = 0; i < objectData->dwDefineCount; i++) {
+		printf("dwData[%d]: %f\n", i, dataArray[i]);
+	}
+
+	/*test* pS = (test*)&objectData->dwData;
+
+	printf("latitude: %f; longitude: %f\n", pS->latitude, pS->longitude);*/
 }

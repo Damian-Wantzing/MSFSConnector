@@ -1,6 +1,7 @@
 #pragma once
 
-#include <unordered_map>
+#include <map>
+#include <any>
 
 #include <windows.h>
 #include "SimConnect.h"
@@ -21,7 +22,7 @@ private:
 	HANDLE sim;
 	SIMCONNECT_PERIOD interval;
 	SIMCONNECT_OBJECT_ID objectID;
-	std::unordered_map<std::string, SimVar> simVars;
-	size_t watcherID = 0;
+	std::map<std::string, SimVar> simVars;
+	DWORD simConnectWatcherID = 0; // The watcherID is only used for the request and should not be used to tell apart two different watchers, since this variable is prone to changing when adding or removing SimVars
 };
 

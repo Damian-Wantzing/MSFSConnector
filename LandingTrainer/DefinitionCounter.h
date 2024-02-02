@@ -1,9 +1,12 @@
 #pragma once
+
+#include <Windows.h>
+
 class DefinitionCounter
 {
 public:
-	static size_t getDefinitionID();
+	static DWORD getDefinitionID();
 private:
-	static size_t definitionCount;
+	static DWORD definitionCount;
 };
 
