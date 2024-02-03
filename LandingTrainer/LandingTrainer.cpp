@@ -24,17 +24,15 @@ int main()
 
 		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_ONCE);
 
-		watcher.addSimVar(SimVar{ "Plane Latitude","degrees" });
-		watcher.addSimVar(SimVar{ "Plane Longitude","degrees" });
-		watcher.addSimVar(SimVar{ "Plane Altitude","feet" });
+		watcher.addSimVar(SimVar{ "TITLE", "", SIMCONNECT_DATATYPE_STRINGV });
+		watcher.addSimVar(SimVar{ "Plane Latitude", "degrees"});
 
 		try
 		{
 			Sleep(2000);
-			double altitude = watcher.get<double>("Plane Altitude");
-			double longitude = watcher.get<double>("Plane Longitude");
+			std::string title = watcher.get<std::string>("TITLE");
 			double latitude = watcher.get<double>("Plane Latitude");
-			printf("altitude: %f\nlatitude: %f\nlongitude: %f\n", altitude, latitude, longitude);
+			printf("%s: %f", title.c_str(), latitude);
 		}
 		catch (const std::runtime_error& error)
 		{

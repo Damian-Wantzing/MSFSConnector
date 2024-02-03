@@ -162,8 +162,14 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		}
 		case SIMCONNECT_DATATYPE_STRINGV:
 		{
-			// TODO: figure out if these are c-style strings. If so we can continue until we find the null terminated character and determine the string length bases on that
-			throw std::runtime_error("Variable length strings are not supported yet");
+			int i = 0;
+			while (dataArray[i] != '\0')
+			{
+				i++;
+			}
+			std::string value(dataArray, i);
+			simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+			dataArray += i + 1;
 			break;
 		}
 		case SIMCONNECT_DATATYPE_INITPOSITION:
