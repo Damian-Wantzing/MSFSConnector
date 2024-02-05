@@ -146,6 +146,7 @@
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="SimVar.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SimVarSetter.h" />
     <ClInclude Include="SimVarWatcher.h" />
   </ItemGroup>
   <ItemGroup>

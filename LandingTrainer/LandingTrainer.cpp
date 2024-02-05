@@ -3,9 +3,11 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <iostream>
 
 #include "SimConnect.h"
 #include "SimVarWatcher.h"
+#include "SimVarSetter.h"
 
 #include "AtomicList.h"
 
@@ -14,32 +16,53 @@ void callback(SIMCONNECT_RECV* data)
 	printf("This is a callback being called\n");
 }
 
+static enum EVENT_ID {
+	EVENT_MY_EVENT,
+	EVENT_DME
+};
+
+HANDLE sim;
+
+void CALLBACK MyInputEventCallback(SIMCONNECT_RECV* pData, DWORD cbData, void* pContext) {
+	if (pData->dwID == SIMCONNECT_RECV_ID_ENUMERATE_INPUT_EVENTS) {
+		SIMCONNECT_RECV_ENUMERATE_INPUT_EVENTS* evt = (SIMCONNECT_RECV_ENUMERATE_INPUT_EVENTS*)pData;
+		SIMCONNECT_INPUT_EVENT_DESCRIPTOR* eventDescriptor = evt->rgData;
+
+		for (int i = 0; i < evt->dwArraySize; i++)
+		{
+			printf("name: %s hash: %u\n", eventDescriptor[i].Name, eventDescriptor[i].Hash);
+			continue;
+
+			/*if (strcmp(eventDescriptor[i].Name, "FNX320_Input_Knob_PushPull_E_FCU_ALTITUDE_Knob") == 0)
+			{
+				printf("found %s\n", eventDescriptor[i].Name);
+				double value = 1;
+				SimConnect_SetInputEvent(sim, (UINT64)eventDescriptor[i].Hash, sizeof(double), &value);
+			}*/
+		}
+	}
+}
+
 int main()
 {
-	HANDLE sim;
-
 	if (SUCCEEDED(SimConnect_Open(&sim, "Request Data", NULL, 0, 0, 0)))
 	{
 		printf("\nConnected to sim\n");
 
-		SimVarWatcher watcher(sim, SIMCONNECT_PERIOD_ONCE);
+		//SimVarSetter::setSimVar(sim, "PLANE ALTITUDE", "feet", SIMCONNECT_DATATYPE_FLOAT64, 1000.0, sizeof(double));
+		//SimVarSetter::setSimVar(sim, "PLANE ALTITUDE", "feet", SIMCONNECT_DATATYPE_FLOAT64, 10000.0, sizeof(double));
 
-		watcher.addSimVar(SimVar{ "TITLE", "", SIMCONNECT_DATATYPE_STRINGV });
-		watcher.addSimVar(SimVar{ "Plane Latitude", "degrees"});
+		/*SimConnect_EnumerateInputEvents(sim, 0);
 
-		try
+		while (true)
 		{
-			Sleep(2000);
-			std::string title = watcher.get<std::string>("TITLE");
-			double latitude = watcher.get<double>("Plane Latitude");
-			printf("%s: %f", title.c_str(), latitude);
-		}
-		catch (const std::runtime_error& error)
-		{
-			printf("%s", error.what());
-		}
+			SimConnect_CallDispatch(sim, MyInputEventCallback, NULL);
+			Sleep(1);
+		}*/
 
-		Sleep(10000000);
+		
+
+		Sleep(100000);
 
 		SimConnect_Close(sim);
 	}
