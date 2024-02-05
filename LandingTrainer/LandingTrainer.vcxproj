@@ -132,8 +132,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DefinitionCounter.cpp" />
+    <ClCompile Include="ClientEventSender.cpp" />
+    <ClCompile Include="IDCounter.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
+    <ClCompile Include="InputEventSender.cpp" />
     <ClCompile Include="LandingTrainer.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(MSFS_SDK)\SimConnect SDK\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -142,8 +144,10 @@
   <ItemGroup>
     <ClInclude Include="AtomicList.h" />
     <ClInclude Include="AtomicMap.h" />
-    <ClInclude Include="DefinitionCounter.h" />
+    <ClInclude Include="ClientEventSender.h" />
+    <ClInclude Include="IDCounter.h" />
     <ClInclude Include="Dispatcher.h" />
+    <ClInclude Include="InputEventSender.h" />
     <ClInclude Include="SimVar.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimVarSetter.h" />

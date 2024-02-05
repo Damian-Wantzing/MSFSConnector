@@ -27,13 +27,19 @@
     <ClCompile Include="LandingTrainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DefinitionCounter.cpp">
+    <ClCompile Include="IDCounter.cpp">
       <Filter>Source Files\Application Specific Libs</Filter>
     </ClCompile>
     <ClCompile Include="Dispatcher.cpp">
       <Filter>Source Files\Application Specific Libs</Filter>
     </ClCompile>
     <ClCompile Include="SimVarWatcher.cpp">
+      <Filter>Source Files\Application Specific Libs</Filter>
+    </ClCompile>
+    <ClCompile Include="InputEventSender.cpp">
+      <Filter>Source Files\Application Specific Libs</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientEventSender.cpp">
       <Filter>Source Files\Application Specific Libs</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +50,7 @@
     <ClInclude Include="AtomicList.h">
       <Filter>Header Files\Generic Libs</Filter>
     </ClInclude>
-    <ClInclude Include="DefinitionCounter.h">
+    <ClInclude Include="IDCounter.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
     <ClInclude Include="Dispatcher.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files\Generic Libs</Filter>
     </ClInclude>
     <ClInclude Include="SimVarSetter.h">
+      <Filter>Header Files\Application Specific Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEventSender.h">
+      <Filter>Header Files\Application Specific Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientEventSender.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@ SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_
 	this->interval = interval;
 	this->objectID = objectID;
 
-	simConnectWatcherID = DefinitionCounter::getDefinitionID();
+	simConnectWatcherID = IDCounter::getID();
 	Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
 }
 
@@ -60,7 +60,7 @@ void SimVarWatcher::addDataDefinitions()
 	SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
 	
 	// get a new watcher ID for the new request
-	simConnectWatcherID = DefinitionCounter::getDefinitionID();
+	simConnectWatcherID = IDCounter::getID();
 
 	// if there are no simvars, we return
 	// if we do not return here we will attempt to request a non existing data definition and msfs crashes

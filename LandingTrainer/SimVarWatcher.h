@@ -10,7 +10,7 @@
 #include "AtomicMap.h"
 #include "Dispatcher.h"
 #include "SimVar.h"
-#include "DefinitionCounter.h"
+#include "IDCounter.h"
 
 class SimVarWatcher
 {
