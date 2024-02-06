@@ -132,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClientEventSender.cpp" />
     <ClCompile Include="IDCounter.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="InputEventSender.cpp" />

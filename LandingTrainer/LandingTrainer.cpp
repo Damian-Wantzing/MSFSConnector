@@ -9,6 +9,7 @@
 #include "SimVarWatcher.h"
 #include "SimVarSetter.h"
 #include "InputEventSender.h"
+#include "ClientEventSender.h"
 
 #include "AtomicList.h"
 
@@ -21,9 +22,7 @@ int main()
 	{
 		printf("Connected to sim\n");
 
-		InputEventSender eventSender(sim);
-
-		eventSender.sendEvent("FNX320_Input_Knob_PushPull_E_FCU_SPEED_Push", 1, sizeof(1));
+		ClientEventSender::sendEvent(sim, "FLAPS_DOWN");
 
 		Sleep(10000000);
 

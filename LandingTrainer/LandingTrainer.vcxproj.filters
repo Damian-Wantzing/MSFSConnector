@@ -39,9 +39,6 @@
     <ClCompile Include="InputEventSender.cpp">
       <Filter>Source Files\Application Specific Libs</Filter>
     </ClCompile>
-    <ClCompile Include="ClientEventSender.cpp">
-      <Filter>Source Files\Application Specific Libs</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
