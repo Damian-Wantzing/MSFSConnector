@@ -2,6 +2,8 @@
 
 #include <map>
 #include <any>
+#include <future>
+#include <atomic>
 
 #include <windows.h>
 #include "SimConnect.h"
@@ -23,6 +25,8 @@ public:
 	template <typename T>
 	T get(std::string name)
 	{
+		future.wait();
+
 		if (simVarResults.count(name) == 0) throw std::runtime_error("Requested SimVar is not available");
 		if (simVarResults.get(name).type() != typeid(T)) throw std::runtime_error("Provided type does not match the SimVar type");
 		return std::any_cast<T>(simVarResults.get(name));
@@ -36,5 +40,8 @@ private:
 	AtomicList<SimVar> simVars;
 	AtomicMap<std::string, std::any> simVarResults;
 	DWORD simConnectWatcherID = 0; // The watcherID is only used for the request and should not be used to tell apart two different watchers, since this variable is prone to changing when adding or removing SimVars
+	std::promise<void> promise;
+	std::future<void> future = promise.get_future();
+	std::atomic<bool> promiseSet{ false };
 };
 

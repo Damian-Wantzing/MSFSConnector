@@ -28,8 +28,10 @@ void SimVarWatcher::addSimVar(SimVar simVar)
 	{
 		SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
 		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+		promiseSet.store(false);
 		SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 	}
+
 }
 
 void SimVarWatcher::removeSimVar(std::string name)
@@ -70,6 +72,8 @@ void SimVarWatcher::addDataDefinitions()
 	{
 		SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str());
 	}
+
+	promiseSet.store(false);
 
 	SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 }
@@ -209,6 +213,12 @@ void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)
 		}
 		default:
 			break;
+		}
+
+		if (!promiseSet.load())
+		{
+			promise.set_value();
+			promiseSet.store(true);
 		}
 	}
 }
