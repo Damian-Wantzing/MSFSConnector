@@ -1,6 +1,7 @@
 #pragma once
 
 #include <any>
+#include <future>
 #include <Windows.h>
 
 #include "AtomicMap.h"
@@ -15,7 +16,12 @@ public:
 	void sendEvent(std::string name, std::any value, DWORD valueSize);
 
 private:
+	bool hasEvent(std::string name);
+
 	HANDLE sim;
+	DWORD requestID = 0;
 	AtomicMap<std::string, UINT64> eventHashes;
+	std::promise<void> promise;
+	std::future<void> future = promise.get_future();
 };
 

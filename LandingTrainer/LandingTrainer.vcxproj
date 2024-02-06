@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Facilities.cpp" />
     <ClCompile Include="IDCounter.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="InputEventSender.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="AtomicList.h" />
     <ClInclude Include="AtomicMap.h" />
     <ClInclude Include="ClientEventSender.h" />
+    <ClInclude Include="Facilities.h" />
     <ClInclude Include="IDCounter.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="InputEventSender.h" />

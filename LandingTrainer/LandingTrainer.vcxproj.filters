@@ -39,6 +39,9 @@
     <ClCompile Include="InputEventSender.cpp">
       <Filter>Source Files\Application Specific Libs</Filter>
     </ClCompile>
+    <ClCompile Include="Facilities.cpp">
+      <Filter>Source Files\Application Specific Libs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
     <ClInclude Include="ClientEventSender.h">
+      <Filter>Header Files\Application Specific Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Facilities.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
   </ItemGroup>

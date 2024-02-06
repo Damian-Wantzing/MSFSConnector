@@ -3,8 +3,9 @@
 InputEventSender::InputEventSender(HANDLE sim)
 {
 	this->sim = sim;
+	requestID = IDCounter::getID();
 	Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
-	SimConnect_EnumerateInputEvents(sim, IDCounter::getID());
+	SimConnect_EnumerateInputEvents(sim, requestID);
 }
 
 void InputEventSender::callbackHandler(SIMCONNECT_RECV* data)
@@ -18,14 +19,36 @@ void InputEventSender::callbackHandler(SIMCONNECT_RECV* data)
 	{
 		eventHashes.insert(std::pair<std::string, UINT64>(eventDescriptor[i].Name, eventDescriptor[i].Hash));
 	}
+
+	promise.set_value();
 }
 
 void InputEventSender::sendEvent(std::string name, std::any value, DWORD valueSize)
 {
-	if (eventHashes.count(name) == 0)
+	// does the event exist
+	if (!hasEvent(name))
 	{
-		throw std::runtime_error("event name not found: " + name);
-		return;
+		// event does not exist yet, re-request the inputevents to see if it does exist
+		SimConnect_EnumerateInputEvents(sim, requestID);
+
+		// wait for the callbackHandler to finish
+		future.get();
+
+		// reset the future/promise
+		promise = std::promise<void>();
+		future = promise.get_future();
+
+		// does the event still not exist?
+		if (!hasEvent(name))
+		{
+			throw std::runtime_error("event name not found: " + name);
+			return;
+		}
 	}
 	SimConnect_SetInputEvent(sim, eventHashes.get(name), valueSize, &value);
+}
+
+bool InputEventSender::hasEvent(std::string name)
+{
+	return eventHashes.count(name) > 0;
 }
