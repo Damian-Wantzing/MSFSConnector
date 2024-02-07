@@ -8,7 +8,12 @@ SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_
 	this->objectID = objectID;
 
 	simConnectWatcherID = IDCounter::getID();
-	Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
+	callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
+}
+
+SimVarWatcher::~SimVarWatcher()
+{
+	Dispatcher::getInstance(sim).deregisterCallback(callbackID);
 }
 
 void SimVarWatcher::addSimVar(SimVar simVar)

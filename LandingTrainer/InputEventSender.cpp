@@ -4,8 +4,13 @@ InputEventSender::InputEventSender(HANDLE sim)
 {
 	this->sim = sim;
 	requestID = IDCounter::getID();
-	Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+	callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 	SimConnect_EnumerateInputEvents(sim, requestID);
+}
+
+InputEventSender::~InputEventSender()
+{
+	Dispatcher::getInstance(sim).deregisterCallback(callbackID);
 }
 
 void InputEventSender::callbackHandler(SIMCONNECT_RECV* data)

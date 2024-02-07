@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Application Specific Libs">
       <UniqueIdentifier>{ba9f0a3a-2e1a-482c-a5c6-0657d7802720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Application Specific Libs\Types">
+      <UniqueIdentifier>{2817549b-a484-4f2c-849a-cb5f2925e0ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LandingTrainer.cpp">
@@ -56,9 +59,6 @@
     <ClInclude Include="Dispatcher.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
-    <ClInclude Include="SimVar.h">
-      <Filter>Header Files\Application Specific Libs</Filter>
-    </ClInclude>
     <ClInclude Include="SimVarWatcher.h">
       <Filter>Header Files\Application Specific Libs</Filter>
     </ClInclude>
@@ -76,6 +76,42 @@
     </ClInclude>
     <ClInclude Include="Facilities.h">
       <Filter>Header Files\Application Specific Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Airport.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachLights.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Pavement.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Runway.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="SimVar.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Vasi.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RunwaySurface.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ILSType.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RunwayDesignator.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachLightSystem.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="VasiType.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AtomicVector.h">
+      <Filter>Header Files\Generic Libs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

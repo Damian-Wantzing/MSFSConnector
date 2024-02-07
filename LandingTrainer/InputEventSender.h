@@ -12,6 +12,7 @@ class InputEventSender
 {
 public:
 	InputEventSender(HANDLE sim);
+	~InputEventSender();
 	void callbackHandler(SIMCONNECT_RECV* data);
 	void sendEvent(std::string name, std::any value, DWORD valueSize);
 
@@ -19,6 +20,7 @@ private:
 	bool hasEvent(std::string name);
 
 	HANDLE sim;
+	Dispatcher::CallbackID callbackID;
 	DWORD requestID = 0;
 	AtomicMap<std::string, UINT64> eventHashes;
 	std::promise<void> promise;

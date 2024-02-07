@@ -142,17 +142,28 @@
     <ClCompile Include="SimVarWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Airport.h" />
+    <ClInclude Include="ApproachLights.h" />
+    <ClInclude Include="ApproachLightSystem.h" />
     <ClInclude Include="AtomicList.h" />
     <ClInclude Include="AtomicMap.h" />
+    <ClInclude Include="AtomicVector.h" />
     <ClInclude Include="ClientEventSender.h" />
     <ClInclude Include="Facilities.h" />
     <ClInclude Include="IDCounter.h" />
     <ClInclude Include="Dispatcher.h" />
+    <ClInclude Include="ILSType.h" />
     <ClInclude Include="InputEventSender.h" />
+    <ClInclude Include="Pavement.h" />
+    <ClInclude Include="Runway.h" />
+    <ClInclude Include="RunwayDesignator.h" />
+    <ClInclude Include="RunwaySurface.h" />
     <ClInclude Include="SimVar.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SimVarSetter.h" />
     <ClInclude Include="SimVarWatcher.h" />
+    <ClInclude Include="Vasi.h" />
+    <ClInclude Include="VasiType.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LandingTrainer.rc" />

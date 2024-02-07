@@ -18,6 +18,7 @@ class SimVarWatcher
 {
 public:
 	SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_OBJECT_ID objectID = SIMCONNECT_OBJECT_ID_USER);
+	~SimVarWatcher();
 	void addSimVar(SimVar simVar);
 	void removeSimVar(std::string name);
 	void callbackHandler(SIMCONNECT_RECV* data);
@@ -35,13 +36,14 @@ private:
 	void addDataDefinitions();
 
 	HANDLE sim;
+	Dispatcher::CallbackID callbackID;
 	SIMCONNECT_PERIOD interval;
 	SIMCONNECT_OBJECT_ID objectID;
 	AtomicList<SimVar> simVars;
 	AtomicMap<std::string, std::any> simVarResults;
 	DWORD simConnectWatcherID = 0; // The watcherID is only used for the request and should not be used to tell apart two different watchers, since this variable is prone to changing when adding or removing SimVars
 	std::promise<void> promise;
-	std::future<void> future = promise.get_future();
+	std::shared_future<void> future = promise.get_future();
 	std::atomic<bool> promiseSet{ false };
 };
 
