@@ -143,8 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airport.h" />
+    <ClInclude Include="Approach.h" />
     <ClInclude Include="ApproachLights.h" />
     <ClInclude Include="ApproachLightSystem.h" />
+    <ClInclude Include="ApproachType.h" />
     <ClInclude Include="AtomicList.h" />
     <ClInclude Include="AtomicMap.h" />
     <ClInclude Include="AtomicVector.h" />
@@ -152,7 +154,7 @@
     <ClInclude Include="Facilities.h" />
     <ClInclude Include="IDCounter.h" />
     <ClInclude Include="Dispatcher.h" />
-    <ClInclude Include="ILSType.h" />
+    <ClInclude Include="FixType.h" />
     <ClInclude Include="InputEventSender.h" />
     <ClInclude Include="Pavement.h" />
     <ClInclude Include="Runway.h" />

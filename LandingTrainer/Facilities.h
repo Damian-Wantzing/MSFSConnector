@@ -12,6 +12,7 @@
 #include "Dispatcher.h"
 #include "AtomicVector.h"
 #include "Airport.h"
+#include "Approach.h"
 #include "Runway.h"
 
 struct TempRunway
@@ -41,15 +42,20 @@ struct TempRunway
 class Facilities
 {
 public:
+	void callbackHandler(SIMCONNECT_RECV* data);
 	static Airport getAirport(HANDLE sim, std::string name);
 	static std::vector<Runway> getRunways(HANDLE sim, std::string airport);
-	void callbackHandler(SIMCONNECT_RECV* data);
+	static std::vector<Approach> getApproaches(HANDLE sim, std::string airport);
 
 private:
 	Airport getAirportFacility(HANDLE sim, std::string name);
+
 	std::vector<Runway> getRunwaysForAirport(HANDLE sim, std::string airport);
 	void addRunwayFacilityDefinition(HANDLE sim);
 	Runway setRunwayFromTemp(TempRunway tempRunway);
+
+	std::vector<Approach> getApproachesForAirport(HANDLE sim, std::string airport);
+
 
 	void setDone()
 	{

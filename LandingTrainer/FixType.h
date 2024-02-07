@@ -1,6 +1,6 @@
 #pragma once
 
-enum ILSType
+enum FixType
 {
 	Airport = 65,
 	VOR = 86,

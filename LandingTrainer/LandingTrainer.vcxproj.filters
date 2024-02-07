@@ -98,7 +98,7 @@
     <ClInclude Include="RunwaySurface.h">
       <Filter>Header Files\Application Specific Libs\Types</Filter>
     </ClInclude>
-    <ClInclude Include="ILSType.h">
+    <ClInclude Include="FixType.h">
       <Filter>Header Files\Application Specific Libs\Types</Filter>
     </ClInclude>
     <ClInclude Include="RunwayDesignator.h">
@@ -112,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="AtomicVector.h">
       <Filter>Header Files\Generic Libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachType.h">
+      <Filter>Header Files\Application Specific Libs\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

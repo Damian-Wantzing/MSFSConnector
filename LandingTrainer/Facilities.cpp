@@ -285,3 +285,55 @@ Runway Facilities::setRunwayFromTemp(TempRunway tempRunway)
 
 	return runway;
 }
+
+std::vector<Approach> Facilities::getApproaches(HANDLE sim, std::string airport)
+{
+	Facilities facilities;
+	return facilities.getApproachesForAirport(sim, airport);
+}
+
+std::vector<Approach> Facilities::getApproachesForAirport(HANDLE sim, std::string airport)
+{
+	Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+
+	requestID = IDCounter::getID();
+
+	SimConnect_AddToFacilityDefinition(sim, requestID, "OPEN AIRPORT");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "OPEN APPROACH");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "TYPE");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "SUFFIX");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "RUNWAY_NUMBER");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "RUNWAY_DESIGNATOR");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "FAF_ICAO");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "FAF_REGION");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "FAF_HEADING");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "FAF_ALTITUDE");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "FAF_TYPE");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "MISSED_ALTITUDE");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "HAS_LNAV");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "HAS_LNAVVNAV");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "HAS_LP");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "HAS_LPV");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "N_TRANSITIONS");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "N_FINAL_APPROACH_LEGS");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "N_MISSED_APPROACH_LEGS");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "CLOSE APPROACH");
+	SimConnect_AddToFacilityDefinition(sim, requestID, "CLOSE AIRPORT");
+
+	HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());
+	if (hr == SIMCONNECT_EXCEPTION_ERROR) throw std::runtime_error("airport not found: " + airport);
+
+	waitForDone();
+
+	std::vector<Approach> approaches;
+
+	for (int i = 1; i < result.size(); i ++)
+	{
+		Approach approach = *reinterpret_cast<Approach*>(result[i].get());
+		approaches.push_back(approach);
+	}
+
+	Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+
+	return approaches;
+}

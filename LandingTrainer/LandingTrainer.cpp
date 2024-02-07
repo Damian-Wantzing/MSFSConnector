@@ -42,18 +42,20 @@ int main()
 	{
 		printf("Connected to sim\n");
 
-		SimConnect_AddToFacilityDefinition(sim, 0, "OPEN AIRPORT");
+		/*SimConnect_AddToFacilityDefinition(sim, 0, "OPEN AIRPORT");
 		SimConnect_AddToFacilityDefinition(sim, 0, "OPEN ARRIVAL");
 		SimConnect_AddToFacilityDefinition(sim, 0, "NAME");
 		SimConnect_AddToFacilityDefinition(sim, 0, "CLOSE ARRIVAL");
-		SimConnect_AddToFacilityDefinition(sim, 0, "CLOSE AIRPORT");
+		SimConnect_AddToFacilityDefinition(sim, 0, "CLOSE AIRPORT");*/
 
-		SimConnect_RequestFacilityData(sim, 0, 0, "EHAM");
+		//SimConnect_RequestFacilityData(sim, 0, 0, "EHAM");
 
-		while (true)
+		/*while (true)
 		{
 			SimConnect_CallDispatch(sim, myCallback, NULL);
-		}
+		}*/
+
+		std::vector<Approach> approaches = Facilities::getApproaches(sim, "EHAM");
 
 		SimConnect_Close(sim);
 	}
