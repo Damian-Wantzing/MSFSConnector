@@ -1,8 +1,11 @@
 #include "IDCounter.h"
 
-DWORD IDCounter::IDCount = 0;
-
-DWORD IDCounter::getID()
+namespace MSFSConnector
 {
-	return IDCount++;
+	DWORD IDCounter::IDCount = 0;
+
+	DWORD IDCounter::getID()
+	{
+		return IDCount++;
+	}
 }

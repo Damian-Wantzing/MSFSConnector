@@ -2,29 +2,33 @@
 
 #include <string>
 
-enum RunwayDesignator
+namespace MSFSConnector
 {
-	NONE,
-	LEFT,
-	RIGHT,
-	CENTER,
-	WATER,
-	A,
-	B,
-	LAST
-};
-
-std::string RunwayDesignatorToString(RunwayDesignator designator)
-{
-	switch (designator)
+	enum RunwayDesignator
 	{
-	case NONE: return "";
-	case LEFT: return "L";
-	case RIGHT: return "R";
-	case CENTER: return "C";
-	case WATER: return "Water";
-	case A: return "A";
-	case B: return "B";
-	case LAST: return "Last";
+		NONE,
+		LEFT,
+		RIGHT,
+		CENTER,
+		WATER,
+		A,
+		B,
+		LAST
+	};
+
+	std::string RunwayDesignatorToString(RunwayDesignator designator)
+	{
+		switch (designator)
+		{
+		case NONE: return "";
+		case LEFT: return "L";
+		case RIGHT: return "R";
+		case CENTER: return "C";
+		case WATER: return "Water";
+		case A: return "A";
+		case B: return "B";
+		case LAST: return "Last";
+		default: return "Invalid designator";
+		}
 	}
 }

@@ -55,7 +55,7 @@ int main()
 			SimConnect_CallDispatch(sim, myCallback, NULL);
 		}*/
 
-		std::vector<Approach> approaches = Facilities::getApproaches(sim, "EHAM");
+		std::vector<MSFSConnector::Approach> approaches = MSFSConnector::Facilities::getApproaches(sim, "EHAM");
 
 		SimConnect_Close(sim);
 	}

@@ -1,11 +1,14 @@
 #pragma once
 #include <cstdint>
 
-struct Vasi
+namespace MSFSConnector
 {
-	int32_t type;
-	float biasX;
-	float biasZ;
-	float spacing;
-	float angle;
-};
+	struct Vasi
+	{
+		int32_t type;
+		float biasX;
+		float biasZ;
+		float spacing;
+		float angle;
+	};
+}

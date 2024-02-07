@@ -10,35 +10,38 @@
 #include <Windows.h>
 #include "SimConnect.h"
 
-class Dispatcher
+namespace MSFSConnector
 {
-public:
-	using CallbackID = size_t;
-
-	static Dispatcher& getInstance(HANDLE sim)
+	class Dispatcher
 	{
-		static Dispatcher instance(sim);
-		return instance;
-	}
+	public:
+		using CallbackID = size_t;
 
-	Dispatcher(Dispatcher const&) = delete;
-	void operator=(Dispatcher const&) = delete;
+		static Dispatcher& getInstance(HANDLE sim)
+		{
+			static Dispatcher instance(sim);
+			return instance;
+		}
 
-	CallbackID registerCallback(std::function<void(SIMCONNECT_RECV*)> callback);
-	void deregisterCallback(CallbackID id);
-	void run();
+		Dispatcher(Dispatcher const&) = delete;
+		void operator=(Dispatcher const&) = delete;
 
-private:
-	Dispatcher(HANDLE sim);
-	~Dispatcher();
+		CallbackID registerCallback(std::function<void(SIMCONNECT_RECV*)> callback);
+		void deregisterCallback(CallbackID id);
+		void run();
 
-	static void CALLBACK handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, void* context);
-	void handle(SIMCONNECT_RECV* pData, DWORD cbData);
-	
-	HANDLE sim;
-	std::shared_mutex rwMutex;
-	std::unordered_map<size_t, std::function<void(SIMCONNECT_RECV*)>> callbacks;
-	std::thread runThread;
-	std::atomic<bool> running = false;
-	size_t nextCallbackID = 0;
-};
+	private:
+		Dispatcher(HANDLE sim);
+		~Dispatcher();
+
+		static void CALLBACK handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, void* context);
+		void handle(SIMCONNECT_RECV* pData, DWORD cbData);
+
+		HANDLE sim;
+		std::shared_mutex rwMutex;
+		std::unordered_map<size_t, std::function<void(SIMCONNECT_RECV*)>> callbacks;
+		std::thread runThread;
+		std::atomic<bool> running = false;
+		size_t nextCallbackID = 0;
+	};
+}

@@ -1,9 +1,12 @@
 #pragma once
 
-enum FixType
+namespace MSFSConnector
 {
-	Airport = 65,
-	VOR = 86,
-	NDB = 78,
-	Waypoint = 87
-};
+	enum FixType
+	{
+		Airport = 65,
+		VOR = 86,
+		NDB = 78,
+		Waypoint = 87
+	};
+}

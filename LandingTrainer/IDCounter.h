@@ -2,11 +2,13 @@
 
 #include <Windows.h>
 
-class IDCounter
+namespace MSFSConnector
 {
-public:
-	static DWORD getID();
-private:
-	static DWORD IDCount;
-};
-
+	class IDCounter
+	{
+	public:
+		static DWORD getID();
+	private:
+		static DWORD IDCount;
+	};
+}

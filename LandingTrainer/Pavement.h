@@ -1,8 +1,11 @@
 #pragma once
 
-struct Pavement
+namespace MSFSConnector
 {
-	float length;
-	float width;
-	int32_t enabled;
-};
+	struct Pavement
+	{
+		float length;
+		float width;
+		int32_t enabled;
+	};
+}
