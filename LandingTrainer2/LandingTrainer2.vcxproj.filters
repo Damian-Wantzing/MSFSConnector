@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\MSFSConnector">
+      <UniqueIdentifier>{435f4151-49d9-4afa-a9a9-584e631dd05e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MSFSConnector\Types">
+      <UniqueIdentifier>{1ba405be-1dba-4db9-88db-0a0676532270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Atomic">
+      <UniqueIdentifier>{aa2169eb-4d6d-4076-8535-00993742d8b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MSFSConnector">
+      <UniqueIdentifier>{d1d46204-44fd-4851-9442-5405181fb44f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{9416b7a4-f1c8-45cc-8e24-c4291e4d2c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui">
+      <UniqueIdentifier>{187e1e0e-6881-4546-8f6f-0ca59fc6df29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui">
+      <UniqueIdentifier>{73ef629c-47cb-420b-b276-6f2c53bc3823}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LandingTrainer2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dispatcher.cpp">
+      <Filter>Source Files\MSFSConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="Facilities.cpp">
+      <Filter>Source Files\MSFSConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="IDCounter.cpp">
+      <Filter>Source Files\MSFSConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="InputEventSender.cpp">
+      <Filter>Source Files\MSFSConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="SimVarWatcher.cpp">
+      <Filter>Source Files\MSFSConnector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_impl_glfw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_tables.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vendor\src\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Gui.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Airport.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachLights.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachLightSystem.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ApproachType.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="FixType.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Pavement.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Runway.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RunwayDesignator.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RunwaySurface.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="SimVar.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Vasi.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="VasiType.h">
+      <Filter>Header Files\MSFSConnector\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="AtomicList.h">
+      <Filter>Header Files\Atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="AtomicMap.h">
+      <Filter>Header Files\Atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="AtomicVector.h">
+      <Filter>Header Files\Atomic</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientEventSender.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="Dispatcher.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="Facilities.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="IDCounter.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEventSender.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="SimVarSetter.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="SimVarWatcher.h">
+      <Filter>Header Files\MSFSConnector</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui.h">
+      <Filter>Header Files\Gui</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
