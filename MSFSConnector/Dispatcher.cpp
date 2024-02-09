@@ -13,7 +13,10 @@ namespace MSFSConnector
 	Dispatcher::~Dispatcher()
 	{
 		running.store(false);
-		runThread.join();
+		if (runThread.joinable())
+		{
+			runThread.join();
+		}
 	}
 
 	Dispatcher::CallbackID Dispatcher::registerCallback(std::function<void(SIMCONNECT_RECV*)> callback)
@@ -36,7 +39,6 @@ namespace MSFSConnector
 		{
 			SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
 			Sleep(1);
-			if (!running) break;
 		}
 	}
 
