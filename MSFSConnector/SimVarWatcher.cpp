@@ -130,47 +130,11 @@ namespace MSFSConnector
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING8:
-			{
-				std::string value(dataArray, 8);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRING32:
-			{
-				std::string value(dataArray, 32);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRING64:
-			{
-				std::string value(dataArray, 64);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRING128:
-			{
-				std::string value(dataArray, 128);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRING256:
-			{
-				std::string value(dataArray, 256);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRING260:
-			{
-				std::string value(dataArray, 260);
-				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
-				dataArray += sizeof(value);
-				break;
-			}
 			case SIMCONNECT_DATATYPE_STRINGV:
 			{
 				int i = 0;
