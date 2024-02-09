@@ -104,70 +104,70 @@ namespace MSFSConnector
 			case SIMCONNECT_DATATYPE_FLOAT32:
 			{
 				float value = *reinterpret_cast<float*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(float);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_FLOAT64:
 			{
 				double value = *reinterpret_cast<double*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(double);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_INT32:
 			{
 				int32_t value = *reinterpret_cast<int32_t*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(int32_t);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_INT64:
 			{
 				int64_t value = *reinterpret_cast<int64_t*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(int64_t);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING8:
 			{
 				std::string value(dataArray, 8);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING32:
 			{
 				std::string value(dataArray, 32);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING64:
 			{
 				std::string value(dataArray, 64);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING128:
 			{
 				std::string value(dataArray, 128);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING256:
 			{
 				std::string value(dataArray, 256);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_STRING260:
 			{
 				std::string value(dataArray, 260);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
@@ -179,42 +179,42 @@ namespace MSFSConnector
 					i++;
 				}
 				std::string value(dataArray, i);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += i + 1;
 				break;
 			}
 			case SIMCONNECT_DATATYPE_INITPOSITION:
 			{
 				SIMCONNECT_DATA_INITPOSITION value = *reinterpret_cast<SIMCONNECT_DATA_INITPOSITION*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_MARKERSTATE:
 			{
 				SIMCONNECT_DATA_MARKERSTATE value = *reinterpret_cast<SIMCONNECT_DATA_MARKERSTATE*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_WAYPOINT:
 			{
 				SIMCONNECT_DATA_WAYPOINT value = *reinterpret_cast<SIMCONNECT_DATA_WAYPOINT*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_LATLONALT:
 			{
 				SIMCONNECT_DATA_LATLONALT value = *reinterpret_cast<SIMCONNECT_DATA_LATLONALT*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}
 			case SIMCONNECT_DATATYPE_XYZ:
 			{
 				SIMCONNECT_DATA_XYZ value = *reinterpret_cast<SIMCONNECT_DATA_XYZ*>(dataArray);
-				simVarResults.insert(std::pair<std::string, std::any>(it->name, value));
+				simVarResults.set(std::pair<std::string, std::any>(it->name, value));
 				dataArray += sizeof(value);
 				break;
 			}

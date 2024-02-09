@@ -24,7 +24,7 @@ namespace MSFSConnector
 
 		for (DWORD i = 0; i < evt->dwArraySize; i++)
 		{
-			eventHashes.insert(std::pair<std::string, UINT64>(eventDescriptor[i].Name, eventDescriptor[i].Hash));
+			eventHashes.set(std::pair<std::string, UINT64>(eventDescriptor[i].Name, eventDescriptor[i].Hash));
 		}
 
 		promise.set_value();

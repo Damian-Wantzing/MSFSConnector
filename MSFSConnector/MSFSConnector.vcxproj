@@ -134,10 +134,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ApproachType.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="Facilities.cpp" />
     <ClCompile Include="IDCounter.cpp" />
     <ClCompile Include="InputEventSender.cpp" />
+    <ClCompile Include="RunwayDesignator.cpp" />
     <ClCompile Include="SimVarWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>

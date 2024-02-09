@@ -15,10 +15,10 @@ namespace Atomics
 			return map[key];
 		}
 
-		std::pair<typename std::map<K, V>::iterator, bool> insert(const std::pair<K, V>& value)
+		void set(const std::pair<K, V>& value)
 		{
 			std::unique_lock<std::shared_mutex> lock(rwMutex);
-			return map.insert(value);
+			map[value.first] = value.second;
 		}
 
 		size_t count(const K& key) const
