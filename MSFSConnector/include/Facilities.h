@@ -45,11 +45,16 @@ namespace MSFSConnector
 	{
 	public:
 		void callbackHandler(SIMCONNECT_RECV* data);
+		static std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> allAirports(HANDLE sim);
 		static Airport getAirport(HANDLE sim, std::string name);
+		static bool isAirport(HANDLE sim, std::string name);
 		static std::vector<Runway> getRunways(HANDLE sim, std::string airport);
 		static std::vector<Approach> getApproaches(HANDLE sim, std::string airport);
 
 	private:
+		static std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> airports;
+
+		std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> allAirportFacilities(HANDLE sim);
 		Airport getAirportFacility(HANDLE sim, std::string name);
 
 		std::vector<Runway> getRunwaysForAirport(HANDLE sim, std::string airport);
@@ -69,7 +74,7 @@ namespace MSFSConnector
 		void waitForDone()
 		{
 			std::unique_lock<std::mutex> lock(mutex);
-			condition.wait(lock, [this] { return done; });
+			if (!condition.wait_for(lock, std::chrono::milliseconds(5000), [this] { return done; })) throw std::runtime_error("Facilities request timed out");
 		}
 
 		Atomics::AtomicVector<std::shared_ptr<char[]>> result;

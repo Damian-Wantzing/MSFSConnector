@@ -2,10 +2,11 @@
 
 namespace MSFSConnector
 {
-	DWORD IDCounter::IDCount = 0;
+	std::atomic<DWORD> IDCounter::IDCount = 1;
 
 	DWORD IDCounter::getID()
 	{
-		return IDCount++;
+		DWORD idToReturn = IDCount.fetch_add(1);
+		return idToReturn;
 	}
 }

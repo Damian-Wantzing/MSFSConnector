@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include <Windows.h>
 
 namespace MSFSConnector
@@ -9,6 +11,6 @@ namespace MSFSConnector
 	public:
 		static DWORD getID();
 	private:
-		static DWORD IDCount;
+		static std::atomic<DWORD> IDCount;
 	};
 }

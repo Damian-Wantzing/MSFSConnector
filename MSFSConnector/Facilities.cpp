@@ -2,9 +2,11 @@
 
 namespace MSFSConnector
 {
+	std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> Facilities::airports;
+
 	void Facilities::callbackHandler(SIMCONNECT_RECV* data)
 	{
-		if (data->dwID != SIMCONNECT_RECV_ID_FACILITY_DATA && data->dwID != SIMCONNECT_RECV_ID_FACILITY_DATA_END) return;
+		if (data->dwID != SIMCONNECT_RECV_ID_FACILITY_DATA && data->dwID != SIMCONNECT_RECV_ID_FACILITY_DATA_END && data->dwID != SIMCONNECT_RECV_ID_AIRPORT_LIST) return;
 
 		switch (data->dwID)
 		{
@@ -21,16 +23,73 @@ namespace MSFSConnector
 		break;
 		case SIMCONNECT_RECV_ID_FACILITY_DATA_END:
 		{
+			SIMCONNECT_RECV_FACILITY_DATA_END* dataEnd = (SIMCONNECT_RECV_FACILITY_DATA_END*)data;
+			if (dataEnd->RequestId != requestID) return;
 			setDone();
 		}
 		break;
+		case SIMCONNECT_RECV_ID_AIRPORT_LIST:
+		{
+			SIMCONNECT_RECV_AIRPORT_LIST* airportList = (SIMCONNECT_RECV_AIRPORT_LIST*)data;
+			if (airportList->dwRequestID != requestID) return;
+
+			for (size_t i = 0; i < airportList->dwArraySize; i++)
+			{
+				std::shared_ptr<char[]> dataCopy(new char[sizeof(SIMCONNECT_DATA_FACILITY_AIRPORT)]);
+				memcpy(dataCopy.get(), &airportList->rgData[i], sizeof(SIMCONNECT_DATA_FACILITY_AIRPORT));
+				result.push_back(std::move(dataCopy));
+			}
+
+			if ((airportList->dwEntryNumber + 1) >= airportList->dwOutOf) setDone();
 		}
+		}
+	}
+
+	std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> Facilities::allAirports(HANDLE sim)
+	{
+		if (airports.size() > 0) return airports;
+		Facilities facilities;
+		return facilities.allAirportFacilities(sim);
+	}
+
+	std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> Facilities::allAirportFacilities(HANDLE sim)
+	{
+		Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+
+		requestID = IDCounter::getID();
+
+		SimConnect_RequestFacilitiesList(sim, SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT, requestID);
+
+		waitForDone();
+
+		for (int i = 0; i < result.size(); i++)
+		{
+			SIMCONNECT_DATA_FACILITY_AIRPORT airport = *reinterpret_cast<SIMCONNECT_DATA_FACILITY_AIRPORT*>(result[i].get());
+			airports.push_back(airport);
+		}
+
+		return airports;
 	}
 
 	Airport Facilities::getAirport(HANDLE sim, std::string name)
 	{
+		if (!isAirport(sim, name)) throw std::runtime_error("Airport does not exist");
+
 		Facilities facilities;
 		return facilities.getAirportFacility(sim, name);
+	}
+
+	bool Facilities::isAirport(HANDLE sim, std::string name)
+	{
+		std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> airports = allAirports(sim);
+
+		bool airportExists = false;
+		for (int i = 0; i < airports.size(); i++)
+		{
+			if (strcmp(airports[i].Ident, name.c_str()) == 0) airportExists = true;
+		}
+
+		return airportExists;
 	}
 
 	Airport Facilities::getAirportFacility(HANDLE sim, std::string name)
@@ -290,6 +349,8 @@ namespace MSFSConnector
 
 	std::vector<Approach> Facilities::getApproaches(HANDLE sim, std::string airport)
 	{
+		if (!isAirport(sim, airport)) throw std::runtime_error("Airport does not exist");
+
 		Facilities facilities;
 		return facilities.getApproachesForAirport(sim, airport);
 	}
@@ -324,7 +385,7 @@ namespace MSFSConnector
 
 		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());
 		if (hr == SIMCONNECT_EXCEPTION_ERROR) throw std::runtime_error("airport not found: " + airport);
-
+		
 		waitForDone();
 
 		std::vector<Approach> approaches;
