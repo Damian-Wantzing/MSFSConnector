@@ -1,8 +1,11 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+#include <string>
 
-#include "SimConnect.h"
+#include <Windows.h>
+#include <SimConnect.h>
 
 #include "Pavement.h"
 #include "ApproachLights.h"
@@ -45,4 +48,6 @@ namespace MSFSConnector
 		Vasi secondaryLeftVasi;
 		Vasi secondaryRightVasi;
 	};
+
+	std::vector<std::string> simConnectRunwayDefinitions();
 }

@@ -1,8 +1,11 @@
 #pragma once
 #include <cstdint>
+#include <vector>
+#include <string>
 
 namespace MSFSConnector
 {
+	#pragma pack(push, 1)
 	struct Approach
 	{
 		int32_t type;
@@ -23,4 +26,7 @@ namespace MSFSConnector
 		int32_t finalApproachLegsCount;
 		int32_t missedApproachLegsCount;
 	};
+	#pragma pack(pop)
+
+	std::vector<std::string> simConnectApproachDefinitions();
 }

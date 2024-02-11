@@ -4,6 +4,7 @@
 
 namespace MSFSConnector
 {
+	#pragma pack(push, 1)
 	struct ApproachLights
 	{
 		int32_t system;
@@ -17,4 +18,5 @@ namespace MSFSConnector
 		float spacing;
 		float slope;
 	};
+	#pragma pack(pop)
 }

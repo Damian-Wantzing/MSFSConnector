@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 namespace MSFSConnector
 {
+	#pragma pack(push, 1)
 	struct Airport
 	{
 		double latitude;
@@ -28,4 +32,7 @@ namespace MSFSConnector
 		int32_t taxiNamesCount;
 		int32_t jetwaysCount;
 	};
+	#pragma pack(pop)
+
+	std::vector<std::string> simConnectAirportDefinitions();
 }

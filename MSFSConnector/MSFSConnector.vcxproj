@@ -134,19 +134,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Airport.cpp" />
+    <ClCompile Include="Approach.cpp" />
+    <ClCompile Include="ApproachLeg.cpp" />
+    <ClCompile Include="ApproachTransition.cpp" />
     <ClCompile Include="ApproachType.cpp" />
     <ClCompile Include="Dispatcher.cpp" />
     <ClCompile Include="Facilities.cpp" />
     <ClCompile Include="IDCounter.cpp" />
     <ClCompile Include="InputEventSender.cpp" />
+    <ClCompile Include="Runway.cpp" />
     <ClCompile Include="RunwayDesignator.cpp" />
     <ClCompile Include="SimVarWatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Airport.h" />
     <ClInclude Include="include\Approach.h" />
+    <ClInclude Include="include\ApproachLeg.h" />
     <ClInclude Include="include\ApproachLights.h" />
     <ClInclude Include="include\ApproachLightSystem.h" />
+    <ClInclude Include="include\ApproachTransition.h" />
     <ClInclude Include="include\ApproachType.h" />
     <ClInclude Include="include\AtomicList.h" />
     <ClInclude Include="include\AtomicMap.h" />

@@ -19,6 +19,9 @@
     <Filter Include="Header Files\Types">
       <UniqueIdentifier>{1ba405be-1dba-4db9-88db-0a0676532270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Types">
+      <UniqueIdentifier>{b44dcde6-11f7-464c-b2be-759a821a61a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Dispatcher.cpp">
@@ -36,11 +39,26 @@
     <ClCompile Include="SimVarWatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RunwayDesignator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ApproachType.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="RunwayDesignator.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Airport.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Runway.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="ApproachLeg.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Approach.cpp">
+      <Filter>Source Files\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="ApproachTransition.cpp">
+      <Filter>Source Files\Types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="include\SimVarWatcher.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ApproachLeg.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ApproachTransition.h">
+      <Filter>Header Files\Types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

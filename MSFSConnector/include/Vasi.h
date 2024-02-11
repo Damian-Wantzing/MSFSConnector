@@ -3,6 +3,7 @@
 
 namespace MSFSConnector
 {
+	#pragma pack(push, 1)
 	struct Vasi
 	{
 		int32_t type;
@@ -11,4 +12,5 @@ namespace MSFSConnector
 		float spacing;
 		float angle;
 	};
+	#pragma pack(pop)
 }

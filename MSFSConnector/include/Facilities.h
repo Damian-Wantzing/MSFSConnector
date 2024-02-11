@@ -13,10 +13,18 @@
 #include "AtomicVector.h"
 #include "Airport.h"
 #include "Approach.h"
+#include "ApproachTransition.h"
+#include "ApproachLeg.h"
 #include "Runway.h"
 
 namespace MSFSConnector
 {
+	struct Data{
+		DWORD type;
+		std::shared_ptr<char[]> data;
+	};
+
+	#pragma pack(push, 1)
 	struct TempRunway
 	{
 		double latitude;
@@ -40,6 +48,7 @@ namespace MSFSConnector
 		int32_t secondaryNumber;
 		int32_t secondaryDesignator;
 	};
+	#pragma pack(pop)
 
 	class Facilities
 	{
@@ -58,11 +67,9 @@ namespace MSFSConnector
 		Airport getAirportFacility(HANDLE sim, std::string name);
 
 		std::vector<Runway> getRunwaysForAirport(HANDLE sim, std::string airport);
-		void addRunwayFacilityDefinition(HANDLE sim);
 		Runway setRunwayFromTemp(TempRunway tempRunway);
 
 		std::vector<Approach> getApproachesForAirport(HANDLE sim, std::string airport);
-
 
 		void setDone()
 		{
@@ -77,7 +84,7 @@ namespace MSFSConnector
 			if (!condition.wait_for(lock, std::chrono::milliseconds(5000), [this] { return done; })) throw std::runtime_error("Facilities request timed out");
 		}
 
-		Atomics::AtomicVector<std::shared_ptr<char[]>> result;
+		Atomics::AtomicVector<Data> result;
 		DWORD requestID = 0;
 
 		std::condition_variable condition;
