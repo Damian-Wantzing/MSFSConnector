@@ -172,9 +172,9 @@
     <ClInclude Include="include\SimVar.h" />
     <ClInclude Include="include\SimVarSetter.h" />
     <ClInclude Include="include\SimVarWatcher.h" />
+    <ClInclude Include="include\TempTypes.h" />
     <ClInclude Include="include\Vasi.h" />
     <ClInclude Include="include\VasiType.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

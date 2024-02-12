@@ -62,9 +62,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Airport.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
       <Filter>Header Files\Types</Filter>
     </ClInclude>
     <ClInclude Include="include\ApproachTransition.h">
+      <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TempTypes.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
   </ItemGroup>

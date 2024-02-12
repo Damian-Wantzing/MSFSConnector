@@ -158,8 +158,27 @@ namespace MSFSConnector
 			Vasi primaryRightVasi = *reinterpret_cast<Vasi*>(result[i + 11].data.get());
 			Vasi secondaryRightVasi = *reinterpret_cast<Vasi*>(result[i + 12].data.get());
 
-			Runway runway = setRunwayFromTemp(tempRunway);
-
+			Runway runway;
+			runway.latitude = tempRunway.latitude;
+			runway.longitude = tempRunway.longitude;
+			runway.altitude = tempRunway.altitude;
+			runway.heading = tempRunway.heading;
+			runway.length = tempRunway.length;
+			runway.width = tempRunway.width;
+			runway.patternAltitude = tempRunway.patternAltitude;
+			runway.slope = tempRunway.slope;
+			runway.trueSlope = tempRunway.trueSlope;
+			runway.surface = tempRunway.surface;
+			runway.primaryILSICAO = tempRunway.primaryILSICAO;
+			runway.primaryILSRegion = tempRunway.primaryILSRegion;
+			runway.primaryILSType = tempRunway.primaryILSType;
+			runway.primaryNumber = tempRunway.primaryNumber;
+			runway.primaryDesignator = tempRunway.primaryDesignator;
+			runway.secondaryILSICAO = tempRunway.secondaryILSICAO;
+			runway.secondaryILSRegion = tempRunway.secondaryILSRegion;
+			runway.secondaryILSType = tempRunway.secondaryILSType;
+			runway.secondaryNumber = tempRunway.secondaryNumber;
+			runway.secondaryDesignator = tempRunway.secondaryDesignator;
 			runway.primaryThreshold = primaryThreshold;
 			runway.secondaryThreshold = secondaryThreshold;
 			runway.primaryBlastpad = primaryBlastpad;
@@ -179,34 +198,6 @@ namespace MSFSConnector
 		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
 
 		return runways;
-	}
-
-	Runway Facilities::setRunwayFromTemp(TempRunway tempRunway)
-	{
-		Runway runway;
-
-		runway.latitude = tempRunway.latitude;
-		runway.longitude = tempRunway.longitude;
-		runway.altitude = tempRunway.altitude;
-		runway.heading = tempRunway.heading;
-		runway.length = tempRunway.length;
-		runway.width = tempRunway.width;
-		runway.patternAltitude = tempRunway.patternAltitude;
-		runway.slope = tempRunway.slope;
-		runway.trueSlope = tempRunway.trueSlope;
-		runway.surface = tempRunway.surface;
-		runway.primaryILSICAO = tempRunway.primaryILSICAO;
-		runway.primaryILSRegion = tempRunway.primaryILSRegion;
-		runway.primaryILSType = tempRunway.primaryILSType;
-		runway.primaryNumber = tempRunway.primaryNumber;
-		runway.primaryDesignator = tempRunway.primaryDesignator;
-		runway.secondaryILSICAO = tempRunway.secondaryILSICAO;
-		runway.secondaryILSRegion = tempRunway.secondaryILSRegion;
-		runway.secondaryILSType = tempRunway.secondaryILSType;
-		runway.secondaryNumber = tempRunway.secondaryNumber;
-		runway.secondaryDesignator = tempRunway.secondaryDesignator;
-
-		return runway;
 	}
 
 	std::vector<Approach> Facilities::getApproaches(HANDLE sim, std::string airport)
