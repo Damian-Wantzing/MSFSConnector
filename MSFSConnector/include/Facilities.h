@@ -50,6 +50,47 @@ namespace MSFSConnector
 	};
 	#pragma pack(pop)
 
+	#pragma pack(push, 1)
+	struct TempApproach
+	{
+		int32_t type;
+		int32_t suffix;
+		int32_t runwayNumber;
+		int32_t runwayDesignator;
+		char FAFICAO[8];
+		char FAFRegion[8];
+		float FAFHeading;
+		float FAFAltitude;
+		int32_t FAFType;
+		float missedAltitude;
+		int32_t hasLNAV;
+		int32_t hasLNAVVNAV;
+		int32_t hasLP;
+		int32_t hasLPV;
+		int32_t transitionsCount;
+		int32_t finalApproachLegsCount;
+		int32_t missedApproachLegsCount;
+	};
+	#pragma pack(pop)
+
+	#pragma pack(push, 1)
+	struct TempApproachTransition
+	{
+		int32_t type;
+		char IAFICAO[8];
+		char IAFRegion[8];
+		int32_t IAFType;
+		float IAFAltitude;
+		char DMEArcICAO[8];
+		char DMEArcRegion[8];
+		int32_t DMEArcType;
+		int32_t DMEArcRadial;
+		float DMEArcDistance;
+		char name[8];
+		int32_t approachLegsCount;
+	};
+	#pragma pack(pop)
+
 	class Facilities
 	{
 	public:

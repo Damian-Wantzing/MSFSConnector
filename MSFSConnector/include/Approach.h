@@ -3,17 +3,18 @@
 #include <vector>
 #include <string>
 
+#include "ApproachTransition.h"
+
 namespace MSFSConnector
 {
-	#pragma pack(push, 1)
 	struct Approach
 	{
 		int32_t type;
 		int32_t suffix;
 		int32_t runwayNumber;
 		int32_t runwayDesignator;
-		char FAFICAO[8];
-		char FAFRegion[8];
+		std::string FAFICAO;
+		std::string FAFRegion;
 		float FAFHeading;
 		float FAFAltitude;
 		int32_t FAFType;
@@ -25,8 +26,10 @@ namespace MSFSConnector
 		int32_t transitionsCount;
 		int32_t finalApproachLegsCount;
 		int32_t missedApproachLegsCount;
+		std::vector<ApproachTransition> approachTransitions;
+		std::vector<ApproachLeg> finalApproachLegs;
+		std::vector<ApproachLeg> missedApproachLegs;
 	};
-	#pragma pack(pop)
 
 	std::vector<std::string> simConnectApproachDefinitions();
 }

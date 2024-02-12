@@ -3,25 +3,26 @@
 #include <vector>
 #include <string>
 
+#include "ApproachLeg.h"
+
 namespace MSFSConnector
 {
-	#pragma pack(push, 1)
 	struct ApproachTransition
 	{
 		int32_t type;
-		char IAFICAO[8];
-		char IAFRegion[8];
+		std::string IAFICAO;
+		std::string IAFRegion;
 		int32_t IAFType;
 		float IAFAltitude;
-		char DMEArcICAO[8];
-		char DMEArcRegion[8];
+		std::string DMEArcICAO;
+		std::string DMEArcRegion;
 		int32_t DMEArcType;
 		int32_t DMEArcRadial;
 		float DMEArcDistance;
-		char name[8];
+		std::string name;
 		int32_t approachLegsCount;
+		std::vector<ApproachLeg> approachLegs;
 	};
-	#pragma pack(pop)
 
 	std::vector<std::string> simConnectApproachTransitionDefinitions();
 }

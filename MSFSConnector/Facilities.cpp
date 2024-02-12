@@ -243,29 +243,70 @@ namespace MSFSConnector
 				break; // we do not want to do anything with the airport
 			case SIMCONNECT_FACILITY_DATA_APPROACH:
 			{
-				Approach approach = *reinterpret_cast<Approach*>(result[i].data.get());
+				TempApproach tempApproach = *reinterpret_cast<TempApproach*>(result[i].data.get());
+
+				Approach approach;
+				approach.type = tempApproach.type;
+				approach.suffix = tempApproach.suffix;
+				approach.runwayNumber = tempApproach.runwayNumber;
+				approach.runwayDesignator = tempApproach.runwayDesignator;
+				approach.FAFICAO = tempApproach.FAFICAO;
+				approach.FAFRegion = tempApproach.FAFRegion;
+				approach.FAFHeading = tempApproach.FAFHeading;
+				approach.FAFAltitude = tempApproach.FAFAltitude;
+				approach.FAFType = tempApproach.FAFType;
+				approach.missedAltitude = tempApproach.missedAltitude;
+				approach.hasLNAV = tempApproach.hasLNAV;
+				approach.hasLNAVVNAV = tempApproach.hasLNAVVNAV;
+				approach.hasLP = tempApproach.hasLP;
+				approach.hasLPV = tempApproach.hasLPV;
+				approach.transitionsCount = tempApproach.transitionsCount;
+				approach.finalApproachLegsCount = tempApproach.finalApproachLegsCount;
+				approach.missedApproachLegsCount = tempApproach.missedApproachLegsCount;
+
 				approaches.push_back(approach);
 				break;
 			}
 			case SIMCONNECT_FACILITY_DATA_APPROACH_TRANSITION:
 			{
-				ApproachTransition transition = *reinterpret_cast<ApproachTransition*>(result[i].data.get());
+				TempApproachTransition tempTransition = *reinterpret_cast<TempApproachTransition*>(result[i].data.get());
+
+				ApproachTransition transition;
+
+				transition.type = tempTransition.type;
+				transition.IAFICAO = tempTransition.IAFICAO;
+				transition.IAFRegion = tempTransition.IAFRegion;
+				transition.IAFType = tempTransition.IAFType;
+				transition.IAFAltitude = tempTransition.IAFAltitude;
+				transition.DMEArcICAO = tempTransition.DMEArcICAO;
+				transition.DMEArcRegion = tempTransition.DMEArcRegion;
+				transition.DMEArcType = tempTransition.DMEArcType;
+				transition.DMEArcRadial = tempTransition.DMEArcRadial;
+				transition.DMEArcDistance = tempTransition.DMEArcDistance;
+				transition.name = tempTransition.name;
+				transition.approachLegsCount = tempTransition.approachLegsCount;
+				
+				approaches.back().approachTransitions.push_back(transition);
+
 				break;
 			}
 			case SIMCONNECT_FACILITY_DATA_APPROACH_LEG:
 			{
 				ApproachLeg leg = *reinterpret_cast<ApproachLeg*>(result[i].data.get());
+				approaches.back().approachTransitions.back().approachLegs.push_back(leg);
 				break;
 			}
 			case SIMCONNECT_FACILITY_DATA_FINAL_APPROACH_LEG:
 			{
 				ApproachLeg leg = *reinterpret_cast<ApproachLeg*>(result[i].data.get());
+				approaches.back().finalApproachLegs.push_back(leg);
 				break;
 			}
 			case SIMCONNECT_FACILITY_DATA_MISSED_APPROACH_LEG:
 			{
 				ApproachLeg leg = *reinterpret_cast<ApproachLeg*>(result[i].data.get());
-				break; 
+				approaches.back().missedApproachLegs.push_back(leg);
+				break;
 			}
 			}
 		}
