@@ -13,11 +13,13 @@ namespace MSFSConnector
 	public:
 		SystemEventSubscriber(HANDLE sim, std::string eventName, std::function<void(SIMCONNECT_RECV*)> callback);
 		~SystemEventSubscriber();
+		void callbackHandler(SIMCONNECT_RECV* data);
 
 	private:
 		HANDLE sim;
 		std::string eventName;
 		std::function<void(SIMCONNECT_RECV*)> callback;
 		Dispatcher::CallbackID callbackID;
+		DWORD requestID;
 	};
 }

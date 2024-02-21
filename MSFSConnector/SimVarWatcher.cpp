@@ -36,11 +36,11 @@ namespace MSFSConnector
 			auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
 			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
 
-			auto hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+			hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
 			if (FAILED(hr)) throw std::runtime_error("there was an error adding to a data defintion");
 
 			promiseSet.store(false);
-			auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+			hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
 		}
 
@@ -89,7 +89,7 @@ namespace MSFSConnector
 
 		promiseSet.store(false);
 
-		auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+		hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
 		if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
 	}
 
