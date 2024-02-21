@@ -16,6 +16,9 @@
 
 namespace MSFSConnector
 {
+	/* Watch one or more SimVars from MSFS.
+	Create an instance of SimVarWatcher and use the addSimVar method to watch a SimVar.
+	Watched SimVars can subsequently be read using the get<Type>() method.*/
 	class SimVarWatcher
 	{
 	public:

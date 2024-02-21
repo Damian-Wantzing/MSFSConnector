@@ -61,7 +61,8 @@ namespace MSFSConnector
 
 		requestID = IDCounter::getID();
 
-		SimConnect_RequestFacilitiesList(sim, SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT, requestID);
+		HRESULT hr = SimConnect_RequestFacilitiesList(sim, SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT, requestID);
+		if (FAILED(hr)) throw std::runtime_error("there was an error requesting the facilities list");
 
 		waitForDone();
 
@@ -103,7 +104,8 @@ namespace MSFSConnector
 
 		for (const std::string& definition : simConnectAirportDefinitions())
 		{
-			SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
 		}
 
 		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, name.c_str());
@@ -132,7 +134,8 @@ namespace MSFSConnector
 
 		for (const std::string& definition : simConnectRunwayDefinitions())
 		{
-			SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
 		}
 
 		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());
@@ -216,7 +219,8 @@ namespace MSFSConnector
 
 		for (const std::string& definition : simConnectApproachDefinitions())
 		{
-			SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
 		}
 
 		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());

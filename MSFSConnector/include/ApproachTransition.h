@@ -13,7 +13,7 @@ namespace MSFSConnector
 		std::string IAFICAO;
 		std::string IAFRegion;
 		int32_t IAFType;
-		float IAFAltitude;
+		float IAFAltitude; // Altitude of the Initial Approach Fix in meters.
 		std::string DMEArcICAO;
 		std::string DMEArcRegion;
 		int32_t DMEArcType;

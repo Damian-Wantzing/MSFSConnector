@@ -14,7 +14,7 @@ namespace MSFSConnector
 		int32_t FIXType;
 		double FIXLatitude;
 		double FIXLongitude;
-		double FIXAltitude;
+		double FIXAltitude; // Altitude of the FIX in meters.
 		int32_t flyOver;
 		int32_t distanceMinute;
 		int32_t trueDegree;
@@ -24,7 +24,7 @@ namespace MSFSConnector
 		int32_t originType;
 		double originLatitude;
 		double originLongitude;
-		double originAltitude;
+		double originAltitude; // Altitude of the origin in meters.
 		float theta;
 		float RHO;
 		float course;
@@ -39,7 +39,7 @@ namespace MSFSConnector
 		int32_t arcCenterFIXType;
 		double arcCenterFIXLatitude;
 		double arcCenterFIXLongitude;
-		double arcCenterFIXAltitude;
+		double arcCenterFIXAltitude; // Altitude of the Arc Center Fix in meters.
 		int32_t isIAF;
 		int32_t isIF;
 		int32_t isFAF;

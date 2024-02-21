@@ -7,7 +7,8 @@ namespace MSFSConnector
 		this->sim = sim;
 		requestID = IDCounter::getID();
 		callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
-		SimConnect_EnumerateInputEvents(sim, requestID);
+		auto hr = SimConnect_EnumerateInputEvents(sim, requestID);
+		if (FAILED(hr)) throw std::runtime_error("there was an error enumerating input events");
 	}
 
 	InputEventSender::~InputEventSender()
@@ -36,7 +37,9 @@ namespace MSFSConnector
 		if (!hasEvent(name))
 		{
 			// event does not exist yet, re-request the inputevents to see if it does exist
-			SimConnect_EnumerateInputEvents(sim, requestID);
+			auto hr = SimConnect_EnumerateInputEvents(sim, requestID);
+			if (FAILED(hr)) throw std::runtime_error("there was an error enumerating input events");
+
 
 			// wait for the callbackHandler to finish
 			future.get();
@@ -52,7 +55,9 @@ namespace MSFSConnector
 				return;
 			}
 		}
-		SimConnect_SetInputEvent(sim, eventHashes.get(name), valueSize, &value);
+		auto hr = SimConnect_SetInputEvent(sim, eventHashes.get(name), valueSize, &value);
+		if (FAILED(hr)) throw std::runtime_error("there was an error setting an input event");
+
 	}
 
 	bool InputEventSender::hasEvent(std::string name)

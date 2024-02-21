@@ -37,7 +37,8 @@ namespace MSFSConnector
 	{
 		while (running)
 		{
-			SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
+			HRESULT hr = SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
+			if (FAILED(hr)) throw std::runtime_error("there was an error calling dispatch");
 			Sleep(1);
 		}
 	}

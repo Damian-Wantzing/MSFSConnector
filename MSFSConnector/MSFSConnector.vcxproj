@@ -146,6 +146,7 @@
     <ClCompile Include="Runway.cpp" />
     <ClCompile Include="RunwayDesignator.cpp" />
     <ClCompile Include="SimVarWatcher.cpp" />
+    <ClCompile Include="SystemEventSubscriber.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Airport.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="include\TempTypes.h" />
     <ClInclude Include="include\Vasi.h" />
     <ClInclude Include="include\VasiType.h" />
+    <ClInclude Include="SystemEventSubscriber.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -17,11 +17,11 @@ namespace MSFSConnector
 	{
 		double latitude;
 		double longitude;
-		double altitude;
+		double altitude; // Altitude of the runway in meters.
 		float heading;
 		float length;
 		float width;
-		float patternAltitude;
+		float patternAltitude; // Altitude of the pattern in meters.
 		float slope;
 		float trueSlope;
 		int32_t surface;

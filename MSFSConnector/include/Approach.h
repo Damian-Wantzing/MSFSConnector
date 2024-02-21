@@ -16,9 +16,9 @@ namespace MSFSConnector
 		std::string FAFICAO;
 		std::string FAFRegion;
 		float FAFHeading;
-		float FAFAltitude;
+		float FAFAltitude; // Altitude of the FAF in meters.
 		int32_t FAFType;
-		float missedAltitude;
+		float missedAltitude; // Altitude of the Missed Approach Point in meters.
 		int32_t hasLNAV;
 		int32_t hasLNAVVNAV;
 		int32_t hasLP;

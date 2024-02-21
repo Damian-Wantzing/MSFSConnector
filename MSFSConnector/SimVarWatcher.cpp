@@ -33,10 +33,15 @@ namespace MSFSConnector
 		// otherwise just add the definition and move on
 		else
 		{
-			SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
-			SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+			auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
+			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
+
+			auto hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
+			if (FAILED(hr)) throw std::runtime_error("there was an error adding to a data defintion");
+
 			promiseSet.store(false);
-			SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+			auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
 		}
 
 	}
@@ -66,7 +71,8 @@ namespace MSFSConnector
 	void SimVarWatcher::addDataDefinitions()
 	{
 		// remove our entire current data definition, since we will be making a new one
-		SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
+		auto hr = SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
+		if (FAILED(hr)) throw std::runtime_error("there was an error clearing a data definition");
 
 		// get a new watcher ID for the new request
 		simConnectWatcherID = IDCounter::getID();
@@ -77,12 +83,14 @@ namespace MSFSConnector
 
 		for (Atomics::AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 		{
-			SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str());
+			auto hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str());
+			if (FAILED(hr)) throw std::runtime_error("there was an error adding to a data definition");
 		}
 
 		promiseSet.store(false);
 
-		SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+		auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
+		if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
 	}
 
 	void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)

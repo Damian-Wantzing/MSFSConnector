@@ -18,7 +18,7 @@ namespace MSFSConnector
 		char region[8];
 		double towerLatitude;
 		double towerLongitude;
-		double towerAltitude;
+		double towerAltitude; // Altitude of the tower in meters.
 		int32_t runwayCount;
 		int32_t startCount;
 		int32_t frequencyCount;

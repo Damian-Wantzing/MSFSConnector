@@ -14,11 +14,11 @@ struct TempRunway
 {
 	double latitude;
 	double longitude;
-	double altitude;
+	double altitude; // Altitude of the runway in meters.
 	float heading;
 	float length;
 	float width;
-	float patternAltitude;
+	float patternAltitude; // Altitude of the pattern in meters.
 	float slope;
 	float trueSlope;
 	int32_t surface;
@@ -47,7 +47,7 @@ struct TempApproach
 	float FAFHeading;
 	float FAFAltitude;
 	int32_t FAFType;
-	float missedAltitude;
+	float missedAltitude; // Altitude of the Missed Approach Point in meters.
 	int32_t hasLNAV;
 	int32_t hasLNAVVNAV;
 	int32_t hasLP;
@@ -65,7 +65,7 @@ struct TempApproachTransition
 	char IAFICAO[8];
 	char IAFRegion[8];
 	int32_t IAFType;
-	float IAFAltitude;
+	float IAFAltitude; // Altitude of the Initial Approach Fix in meters.
 	char DMEArcICAO[8];
 	char DMEArcRegion[8];
 	int32_t DMEArcType;

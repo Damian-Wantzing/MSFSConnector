@@ -60,6 +60,9 @@
     <ClCompile Include="ApproachTransition.cpp">
       <Filter>Source Files\Types</Filter>
     </ClCompile>
+    <ClCompile Include="SystemEventSubscriber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Airport.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="include\TempTypes.h">
       <Filter>Header Files\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemEventSubscriber.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
