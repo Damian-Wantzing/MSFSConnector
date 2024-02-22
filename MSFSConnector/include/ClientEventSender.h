@@ -21,7 +21,7 @@ namespace MSFSConnector
 			auto hr = SimConnect_MapClientEventToSimEvent(sim, eventID, name.c_str());
 			if (FAILED(hr)) throw std::runtime_error("there was an error mapping a client event to a sim event: " + name);
 
-			auto hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+			hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
 			if (FAILED(hr)) throw std::runtime_error("there was an error transmitting a client event: " + name);
 		}
 	};

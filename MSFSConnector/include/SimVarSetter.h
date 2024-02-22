@@ -20,7 +20,7 @@ namespace MSFSConnector
 			auto hr = SimConnect_AddToDataDefinition(sim, requestID, name.c_str(), unitType.c_str(), dataType);
 			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the SimVar data defintion");
 
-			auto hr = SimConnect_SetDataOnSimObject(sim, requestID, objectID, 0, 0, dataSize, &data);
+			hr = SimConnect_SetDataOnSimObject(sim, requestID, objectID, 0, 0, dataSize, &data);
 			if (FAILED(hr)) throw std::runtime_error("there was an error setting a simvar on a sim object");
 		}
 	};

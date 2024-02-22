@@ -5,9 +5,9 @@ namespace MSFSConnector
 	Dispatcher::Dispatcher(HANDLE sim)
 	{
 		this->sim = sim;
-		running.store(true);
 
 		runThread = std::thread(&Dispatcher::run, this);
+		running.store(true);
 	}
 
 	Dispatcher::~Dispatcher()
@@ -52,7 +52,7 @@ namespace MSFSConnector
 	void Dispatcher::handle(SIMCONNECT_RECV* pData, DWORD cbData)
 	{
 		std::shared_lock<std::shared_mutex> lock(rwMutex);
-		for (std::unordered_map<size_t, std::function<void(SIMCONNECT_RECV*)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
+		for (std::map<size_t, std::function<void(SIMCONNECT_RECV*)>>::iterator it = callbacks.begin(); it != callbacks.end(); ++it)
 		{
 			it->second(pData);
 		}

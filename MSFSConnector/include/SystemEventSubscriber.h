@@ -16,6 +16,8 @@ namespace MSFSConnector
 		void callbackHandler(SIMCONNECT_RECV* data);
 
 	private:
+		bool isEvent(DWORD dwID);
+
 		HANDLE sim;
 		std::string eventName;
 		std::function<void(SIMCONNECT_RECV*)> callback;

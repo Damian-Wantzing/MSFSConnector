@@ -25,11 +25,29 @@ namespace MSFSConnector
 
 	void SystemEventSubscriber::callbackHandler(SIMCONNECT_RECV* data)
 	{
-		if (data->dwID != SIMCONNECT_RECV_ID_EVENT) return;
+		if (!isEvent(data->dwID)) return;
 
 		SIMCONNECT_RECV_EVENT* event = (SIMCONNECT_RECV_EVENT*)data;
 		if (event->uEventID != requestID) return;
 
 		callback(data);
 	}
+
+	bool SystemEventSubscriber::isEvent(DWORD dwID)
+	{
+		if (dwID == SIMCONNECT_RECV_ID_EVENT) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_FILENAME) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_FRAME) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_MULTIPLAYER_SERVER_STARTED) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_MULTIPLAYER_CLIENT_STARTED) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_MULTIPLAYER_SESSION_ENDED) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_RACE_END) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_RACE_LAP) return true;
+		if (dwID == SIMCONNECT_RECV_ID_EVENT_EX1) return true;
+
+		return false;
+	}
+
 }

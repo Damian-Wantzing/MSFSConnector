@@ -146,7 +146,7 @@
     <ClInclude Include="include\TempTypes.h">
       <Filter>Header Files\Types</Filter>
     </ClInclude>
-    <ClInclude Include="SystemEventSubscriber.h">
+    <ClInclude Include="include\SystemEventSubscriber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
