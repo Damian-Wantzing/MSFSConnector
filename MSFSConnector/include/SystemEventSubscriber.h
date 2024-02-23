@@ -19,6 +19,7 @@ namespace MSFSConnector
 		bool isEvent(DWORD dwID);
 
 		HANDLE sim;
+		std::shared_ptr<Dispatcher> dispatcher;
 		std::string eventName;
 		std::function<void(SIMCONNECT_RECV*)> callback;
 		Dispatcher::CallbackID callbackID;

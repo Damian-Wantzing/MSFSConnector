@@ -1,5 +1,4 @@
 #include "SimVarWatcher.h"
-#include <iostream>
 
 namespace MSFSConnector
 {
@@ -10,12 +9,13 @@ namespace MSFSConnector
 		this->objectID = objectID;
 
 		simConnectWatcherID = IDCounter::getID();
-		callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) {this->callbackHandler(data); });
 	}
 
 	SimVarWatcher::~SimVarWatcher()
 	{
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 	}
 
 	void SimVarWatcher::addSimVar(SimVar simVar)

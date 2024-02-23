@@ -6,14 +6,15 @@ namespace MSFSConnector
 	{
 		this->sim = sim;
 		requestID = IDCounter::getID();
-		callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 		auto hr = SimConnect_EnumerateInputEvents(sim, requestID);
 		if (FAILED(hr)) throw std::runtime_error("there was an error enumerating input events");
 	}
 
 	InputEventSender::~InputEventSender()
 	{
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 	}
 
 	void InputEventSender::callbackHandler(SIMCONNECT_RECV* data)

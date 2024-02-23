@@ -1,5 +1,7 @@
 #include "Facilities.h"
 
+#include "IDCounter.h"
+
 namespace MSFSConnector
 {
 	std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> Facilities::airports;
@@ -57,7 +59,8 @@ namespace MSFSConnector
 
 	std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> Facilities::allAirportFacilities(HANDLE sim)
 	{
-		Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		Dispatcher::CallbackID callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 
 		requestID = IDCounter::getID();
 
@@ -98,7 +101,8 @@ namespace MSFSConnector
 
 	Airport Facilities::getAirportFacility(HANDLE sim, std::string name)
 	{
-		Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		Dispatcher::CallbackID callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 
 		requestID = IDCounter::getID();
 
@@ -115,7 +119,7 @@ namespace MSFSConnector
 
 		Airport airport = *reinterpret_cast<Airport*>(result[0].data.get());
 
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 
 		return airport;
 	}
@@ -128,7 +132,8 @@ namespace MSFSConnector
 
 	std::vector<Runway> Facilities::getRunwaysForAirport(HANDLE sim, std::string airport)
 	{
-		Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		Dispatcher::CallbackID callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 
 		requestID = IDCounter::getID();
 
@@ -198,7 +203,7 @@ namespace MSFSConnector
 			runways.push_back(runway);
 		}
 
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 
 		return runways;
 	}
@@ -213,7 +218,8 @@ namespace MSFSConnector
 
 	std::vector<Approach> Facilities::getApproachesForAirport(HANDLE sim, std::string airport)
 	{
-		Dispatcher::CallbackID callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		Dispatcher::CallbackID callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 
 		requestID = IDCounter::getID();
 
@@ -306,7 +312,7 @@ namespace MSFSConnector
 			}
 		}
 
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 
 		return approaches;
 	}

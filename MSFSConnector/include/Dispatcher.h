@@ -16,22 +16,20 @@ namespace MSFSConnector
 	public:
 		using CallbackID = size_t;
 
-		static Dispatcher& getInstance(HANDLE sim)
+		Dispatcher(HANDLE sim);
+		~Dispatcher();
+
+		static std::shared_ptr<Dispatcher> getInstance(HANDLE sim)
 		{
-			static Dispatcher instance(sim);
+			static std::shared_ptr<Dispatcher> instance = std::make_shared<Dispatcher>(sim);
 			return instance;
 		}
-
-		Dispatcher(Dispatcher const&) = delete;
-		void operator=(Dispatcher const&) = delete;
 
 		CallbackID registerCallback(std::function<void(SIMCONNECT_RECV*)> callback);
 		void deregisterCallback(CallbackID id);
 		void run();
 
 	private:
-		Dispatcher(HANDLE sim);
-		~Dispatcher();
 
 		static void CALLBACK handleStatic(SIMCONNECT_RECV* pData, DWORD cbData, void* context);
 		void handle(SIMCONNECT_RECV* pData, DWORD cbData);

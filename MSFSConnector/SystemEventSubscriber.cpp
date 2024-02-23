@@ -13,14 +13,15 @@ namespace MSFSConnector
 		this->eventName = eventName;
 		this->callback = callback;
 		requestID = IDCounter::getID();
-		callbackID = Dispatcher::getInstance(sim).registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
+		dispatcher = Dispatcher::getInstance(sim);
+		callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
 		HRESULT hr = SimConnect_SubscribeToSystemEvent(sim, requestID, eventName.c_str());
 		if (FAILED(hr)) throw std::runtime_error("unable to subscribe to event " + eventName);
 	}
 
 	SystemEventSubscriber::~SystemEventSubscriber()
 	{
-		Dispatcher::getInstance(sim).deregisterCallback(callbackID);
+		dispatcher->deregisterCallback(callbackID);
 	}
 
 	void SystemEventSubscriber::callbackHandler(SIMCONNECT_RECV* data)

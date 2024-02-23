@@ -41,6 +41,7 @@ namespace MSFSConnector
 		void addDataDefinitions();
 
 		HANDLE sim;
+		std::shared_ptr<Dispatcher> dispatcher;
 		Dispatcher::CallbackID callbackID;
 		SIMCONNECT_PERIOD interval;
 		SIMCONNECT_OBJECT_ID objectID;

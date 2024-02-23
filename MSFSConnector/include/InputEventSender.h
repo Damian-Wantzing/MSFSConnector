@@ -25,6 +25,7 @@ namespace MSFSConnector
 		bool hasEvent(std::string name);
 
 		HANDLE sim;
+		std::shared_ptr<Dispatcher> dispatcher;
 		Dispatcher::CallbackID callbackID;
 		DWORD requestID = 0;
 		Atomics::AtomicMap<std::string, UINT64> eventHashes;

@@ -2,20 +2,16 @@
 
 #include <string>
 #include <stdexcept>
-#include <future>
 #include <vector>
 
 #include <Windows.h>
 #include "SimConnect.h"
 
-#include "IDCounter.h"
 #include "Dispatcher.h"
 #include "AtomicVector.h"
 
 #include "Airport.h"
 #include "Approach.h"
-#include "ApproachTransition.h"
-#include "ApproachLeg.h"
 #include "Runway.h"
 #include "TempTypes.h"
 
@@ -51,6 +47,8 @@ namespace MSFSConnector
 		}
 
 		static std::vector<SIMCONNECT_DATA_FACILITY_AIRPORT> airports;
+
+		std::shared_ptr<Dispatcher> dispatcher;
 
 		Atomics::AtomicVector<Data> result;
 		DWORD requestID = 0;
