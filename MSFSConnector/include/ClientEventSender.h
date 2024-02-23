@@ -7,6 +7,7 @@
 
 #include "IDCounter.h"
 #include <stdexcept>
+#include "SimConnectExceptions.h"
 
 namespace MSFSConnector
 {
@@ -18,11 +19,18 @@ namespace MSFSConnector
 		inline static void sendEvent(HANDLE sim, std::string name, DWORD data = 0, SIMCONNECT_OBJECT_ID objectID = SIMCONNECT_OBJECT_ID_USER)
 		{
 			DWORD eventID = IDCounter::getID();
-			auto hr = SimConnect_MapClientEventToSimEvent(sim, eventID, name.c_str());
-			if (FAILED(hr)) throw std::runtime_error("there was an error mapping a client event to a sim event: " + name);
+			
+			HRESULT hr;
 
-			hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
-			if (FAILED(hr)) throw std::runtime_error("there was an error transmitting a client event: " + name);
+			try { hr = SimConnect_MapClientEventToSimEvent(sim, eventID, name.c_str()); }
+			catch (const std::exception& e) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error mapping a client event to a sim event: " + name);
+
+			try { hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY); }
+			catch (const std::exception& e) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error transmitting a client event: " + name);
 		}
 	};
 }

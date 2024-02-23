@@ -149,5 +149,8 @@
     <ClInclude Include="include\SystemEventSubscriber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\SimConnectExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

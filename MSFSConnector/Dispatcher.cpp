@@ -1,5 +1,7 @@
 #include "Dispatcher.h"
 
+#include "SimConnectExceptions.h"
+
 namespace MSFSConnector
 {
 	Dispatcher::Dispatcher(HANDLE sim)
@@ -37,8 +39,18 @@ namespace MSFSConnector
 	{
 		while (running)
 		{
-			HRESULT hr = SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
-			if (FAILED(hr)) throw std::runtime_error("there was an error calling dispatch");
+			HRESULT hr;
+
+			try
+			{
+				hr = SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
+			}
+			catch (const std::exception&)
+			{
+				throw SimConnectUnresponsiveException("There was an error connecting to the sim");
+			}
+
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error calling dispatch");
 			Sleep(1);
 		}
 	}

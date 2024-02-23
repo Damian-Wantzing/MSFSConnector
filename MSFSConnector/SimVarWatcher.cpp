@@ -1,5 +1,7 @@
 #include "SimVarWatcher.h"
 
+#include "SimConnectExceptions.h"
+
 namespace MSFSConnector
 {
 	SimVarWatcher::SimVarWatcher(HANDLE sim, SIMCONNECT_PERIOD interval, SIMCONNECT_OBJECT_ID objectID)
@@ -33,15 +35,21 @@ namespace MSFSConnector
 		// otherwise just add the definition and move on
 		else
 		{
-			auto hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);
-			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
+			HRESULT hr;
 
-			hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str());
-			if (FAILED(hr)) throw std::runtime_error("there was an error adding to a data defintion");
+			try { hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, SIMCONNECT_PERIOD_NEVER);	}
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error requesting data on a simobject");
+
+			try { hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, simVar.name.c_str(), simVar.unitType.c_str()); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error adding to a data defintion");
 
 			promiseSet.store(false);
-			hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
-			if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
+
+			try { hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error requesting data on a simobject");
 		}
 
 	}
@@ -70,9 +78,13 @@ namespace MSFSConnector
 
 	void SimVarWatcher::addDataDefinitions()
 	{
+		HRESULT hr;
+
 		// remove our entire current data definition, since we will be making a new one
-		auto hr = SimConnect_ClearDataDefinition(sim, simConnectWatcherID);
-		if (FAILED(hr)) throw std::runtime_error("there was an error clearing a data definition");
+		try { hr = SimConnect_ClearDataDefinition(sim, simConnectWatcherID); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+		if (FAILED(hr)) throw SimConnectFailureException("there was an error clearing a data definition");
 
 		// get a new watcher ID for the new request
 		simConnectWatcherID = IDCounter::getID();
@@ -83,14 +95,16 @@ namespace MSFSConnector
 
 		for (Atomics::AtomicList<SimVar>::iterator it = simVars.begin(); it != simVars.end(); ++it)
 		{
-			auto hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str());
-			if (FAILED(hr)) throw std::runtime_error("there was an error adding to a data definition");
+			try { hr = SimConnect_AddToDataDefinition(sim, simConnectWatcherID, it->name.c_str(), it->unitType.c_str()); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error adding to a data definition");
 		}
 
 		promiseSet.store(false);
 
-		hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval);
-		if (FAILED(hr)) throw std::runtime_error("there was an error requesting data on a simobject");
+		try { hr = SimConnect_RequestDataOnSimObject(sim, simConnectWatcherID, simConnectWatcherID, objectID, interval); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+		if (FAILED(hr)) throw SimConnectFailureException("there was an error requesting data on a simobject");
 	}
 
 	void SimVarWatcher::callbackHandler(SIMCONNECT_RECV* data)

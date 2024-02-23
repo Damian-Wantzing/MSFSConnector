@@ -1,6 +1,7 @@
 #include "Facilities.h"
 
 #include "IDCounter.h"
+#include "SimConnectExceptions.h"
 
 namespace MSFSConnector
 {
@@ -64,8 +65,11 @@ namespace MSFSConnector
 
 		requestID = IDCounter::getID();
 
-		HRESULT hr = SimConnect_RequestFacilitiesList(sim, SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT, requestID);
-		if (FAILED(hr)) throw std::runtime_error("there was an error requesting the facilities list");
+		HRESULT hr;
+		try { hr = SimConnect_RequestFacilitiesList(sim, SIMCONNECT_FACILITY_LIST_TYPE_AIRPORT, requestID); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+		if (FAILED(hr)) throw SimConnectFailureException("there was an error requesting the facilities list");
 
 		waitForDone();
 
@@ -106,13 +110,18 @@ namespace MSFSConnector
 
 		requestID = IDCounter::getID();
 
+		HRESULT hr;
+
 		for (const std::string& definition : simConnectAirportDefinitions())
 		{
-			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
-			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
+			try { hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str()); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error adding to the facility defintion");
 		}
 
-		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, name.c_str());
+		try { hr = SimConnect_RequestFacilityData(sim, requestID, requestID, name.c_str()); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
 		if (hr == SIMCONNECT_EXCEPTION_ERROR) throw std::runtime_error("airport not found: " + name);
 
 		waitForDone();
@@ -137,13 +146,17 @@ namespace MSFSConnector
 
 		requestID = IDCounter::getID();
 
+		HRESULT hr;
+
 		for (const std::string& definition : simConnectRunwayDefinitions())
 		{
-			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
+			try { hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str()); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
 			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
 		}
 
-		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());
+		try { hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str()); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
 		if (hr == SIMCONNECT_EXCEPTION_ERROR) throw std::runtime_error("airport not found: " + airport);
 
 		waitForDone();
@@ -223,14 +236,19 @@ namespace MSFSConnector
 
 		requestID = IDCounter::getID();
 
+		HRESULT hr;
+
 		for (const std::string& definition : simConnectApproachDefinitions())
 		{
-			auto hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str());
-			if (FAILED(hr)) throw std::runtime_error("there was an error adding to the facility defintion");
+			try { hr = SimConnect_AddToFacilityDefinition(sim, requestID, definition.c_str()); }
+			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			if (FAILED(hr)) throw SimConnectFailureException("there was an error adding to the facility defintion");
 		}
 
-		HRESULT hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str());
-		if (hr == SIMCONNECT_EXCEPTION_ERROR) throw std::runtime_error("airport not found: " + airport);
+		try { hr = SimConnect_RequestFacilityData(sim, requestID, requestID, airport.c_str()); }
+		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+		if (hr == SIMCONNECT_EXCEPTION_ERROR) throw SimConnectFailureException("airport not found: " + airport);
 		
 		waitForDone();
 

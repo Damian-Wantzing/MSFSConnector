@@ -170,6 +170,7 @@
     <ClInclude Include="include\Runway.h" />
     <ClInclude Include="include\RunwayDesignator.h" />
     <ClInclude Include="include\RunwaySurface.h" />
+    <ClInclude Include="include\SimConnectExceptions.h" />
     <ClInclude Include="include\SimVar.h" />
     <ClInclude Include="include\SimVarSetter.h" />
     <ClInclude Include="include\SimVarWatcher.h" />

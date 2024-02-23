@@ -5,6 +5,8 @@
 #include <SimConnect.h>
 #include <Windows.h>
 
+#include "SimConnectExceptions.h"
+
 namespace MSFSConnector
 {
 	SystemEventSubscriber::SystemEventSubscriber(HANDLE sim, std::string eventName, std::function<void(SIMCONNECT_RECV*)> callback)
@@ -15,8 +17,13 @@ namespace MSFSConnector
 		requestID = IDCounter::getID();
 		dispatcher = Dispatcher::getInstance(sim);
 		callbackID = dispatcher->registerCallback([this](SIMCONNECT_RECV* data) { this->callbackHandler(data); });
-		HRESULT hr = SimConnect_SubscribeToSystemEvent(sim, requestID, eventName.c_str());
-		if (FAILED(hr)) throw std::runtime_error("unable to subscribe to event " + eventName);
+
+		HRESULT hr;
+
+		try { hr = SimConnect_SubscribeToSystemEvent(sim, requestID, eventName.c_str()); }
+		catch (const std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+
+		if (FAILED(hr)) throw SimConnectFailureException("unable to subscribe to event " + eventName);
 	}
 
 	SystemEventSubscriber::~SystemEventSubscriber()
