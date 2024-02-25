@@ -13,9 +13,8 @@ namespace MSFSConnector
 
 		HRESULT hr;
 		
-		try { hr = SimConnect_EnumerateInputEvents(sim, requestID); }
-		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-		if (FAILED(hr)) throw SimConnectFailureException("there was an error enumerating input events");
+		hr = SimConnect_EnumerateInputEvents(sim, requestID);
+		if (hr == E_FAIL) throw SimConnectFailureException("there was an error enumerating input events");
 	}
 
 	InputEventSender::~InputEventSender()
@@ -47,9 +46,8 @@ namespace MSFSConnector
 		{
 
 			// event does not exist yet, re-request the inputevents to see if it does exist
-			try { hr = SimConnect_EnumerateInputEvents(sim, requestID); }
-			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error enumerating input events");
+			hr = SimConnect_EnumerateInputEvents(sim, requestID);
+			if (hr == E_FAIL) throw SimConnectFailureException("there was an error enumerating input events");
 
 			// wait for the callbackHandler to finish
 			future.get();
@@ -65,9 +63,8 @@ namespace MSFSConnector
 				return;
 			}
 		}
-		try { hr = SimConnect_SetInputEvent(sim, eventHashes.get(name), valueSize, &value); }
-		catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-		if (FAILED(hr)) throw SimConnectFailureException("there was an error setting an input event");
+		hr = SimConnect_SetInputEvent(sim, eventHashes.get(name), valueSize, &value);
+		if (hr == E_FAIL) throw SimConnectFailureException("there was an error setting an input event");
 
 	}
 

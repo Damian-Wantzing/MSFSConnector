@@ -22,15 +22,11 @@ namespace MSFSConnector
 			
 			HRESULT hr;
 
-			try { hr = SimConnect_MapClientEventToSimEvent(sim, eventID, name.c_str()); }
-			catch (const std::exception& e) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
+			hr = SimConnect_MapClientEventToSimEvent(sim, eventID, name.c_str());
+			if (hr == E_FAIL) throw SimConnectFailureException("there was an error mapping a client event to a sim event: " + name);
 
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error mapping a client event to a sim event: " + name);
-
-			try { hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY); }
-			catch (const std::exception& e) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error transmitting a client event: " + name);
+			hr = SimConnect_TransmitClientEvent(sim, 0, eventID, data, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_EVENT_FLAG_GROUPID_IS_PRIORITY);
+			if (hr == E_FAIL) throw SimConnectFailureException("there was an error transmitting a client event: " + name);
 		}
 	};
 }

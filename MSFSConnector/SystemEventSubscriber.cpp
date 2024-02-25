@@ -20,10 +20,8 @@ namespace MSFSConnector
 
 		HRESULT hr;
 
-		try { hr = SimConnect_SubscribeToSystemEvent(sim, requestID, eventName.c_str()); }
-		catch (const std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-
-		if (FAILED(hr)) throw SimConnectFailureException("unable to subscribe to event " + eventName);
+		hr = SimConnect_SubscribeToSystemEvent(sim, requestID, eventName.c_str());
+		if (hr == E_FAIL) throw SimConnectFailureException("unable to subscribe to event " + eventName);
 	}
 
 	SystemEventSubscriber::~SystemEventSubscriber()

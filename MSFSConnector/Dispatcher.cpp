@@ -41,16 +41,9 @@ namespace MSFSConnector
 		{
 			HRESULT hr;
 
-			try
-			{
-				hr = SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
-			}
-			catch (const std::exception&)
-			{
-				throw SimConnectUnresponsiveException("There was an error connecting to the sim");
-			}
-
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error calling dispatch");
+			hr = SimConnect_CallDispatch(sim, Dispatcher::handleStatic, this);
+			// if this fails we wait for a little bit and try again
+			if (hr == E_FAIL) Sleep(1000);
 			Sleep(1);
 		}
 	}

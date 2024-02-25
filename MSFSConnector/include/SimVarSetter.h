@@ -21,13 +21,11 @@ namespace MSFSConnector
 			HRESULT hr;
 
 			DWORD requestID = IDCounter::getID();
-			try { hr = SimConnect_AddToDataDefinition(sim, requestID, name.c_str(), unitType.c_str(), dataType); }
-			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error adding to the SimVar data defintion");
+			hr = SimConnect_AddToDataDefinition(sim, requestID, name.c_str(), unitType.c_str(), dataType);
+			if (hr == E_FAIL) throw SimConnectFailureException("there was an error adding to the SimVar data defintion");
 
-			try { hr = SimConnect_SetDataOnSimObject(sim, requestID, objectID, 0, 0, dataSize, &data); }
-			catch (std::exception&) { throw SimConnectUnresponsiveException("There was an error connecting to the sim"); }
-			if (FAILED(hr)) throw SimConnectFailureException("there was an error setting a simvar on a sim object");
+			hr = SimConnect_SetDataOnSimObject(sim, requestID, objectID, 0, 0, dataSize, &data);
+			if (hr == E_FAIL) throw SimConnectFailureException("there was an error setting a simvar on a sim object");
 		}
 	};
 }
